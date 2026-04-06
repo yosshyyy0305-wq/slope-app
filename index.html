@@ -16,6 +16,9 @@
     .app{max-width:960px;margin:0 auto;padding:14px}
     .panel{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:14px;margin-bottom:12px}
     h1{margin:0;font-size:22px}
+    .icon-label{display:inline-flex;align-items:center;gap:6px}
+    .icon-tab{margin-right:6px}
+    .icon-box{margin-right:6px}
     .field{margin-bottom:12px}
     .field:last-child{margin-bottom:0}
     label{display:block;font-size:13px;font-weight:800;margin-bottom:6px}
@@ -59,28 +62,28 @@
 <body>
   <div class="app">
     <div class="panel">
-      <h1>勾配計算アプリ</h1>
+      <h1>∠ 勾配計算アプリ</h1>
     </div>
 
     <div class="panel">
       <div class="tab-row">
-        <button id="modeSlope" class="btn active" type="button">勾配を出す</button>
-        <button id="modeRun" class="btn" type="button">水平距離を出す</button>
-        <button id="modeRise" class="btn" type="button">高低差を出す</button>
+        <button id="modeSlope" class="btn active" type="button"><span class="icon-tab">∠</span>勾配を出す</button>
+        <button id="modeRun" class="btn" type="button"><span class="icon-tab">⇄</span>水平距離を出す</button>
+        <button id="modeRise" class="btn" type="button"><span class="icon-tab">⇅</span>高低差を出す</button>
       </div>
     </div>
 
     <div id="panel-slope" class="panel">
       <div class="grid-2">
         <div class="field">
-          <label for="slopeRun">水平距離</label>
+          <label for="slopeRun"><span class="icon-label">⇄ <span>水平距離</span></span></label>
           <div class="unit-input">
             <input id="slopeRun" type="number" value="3000" inputmode="decimal" />
             <span class="unit">mm</span>
           </div>
         </div>
         <div class="field">
-          <label for="slopeRise">高低差</label>
+          <label for="slopeRise"><span class="icon-label">⇅ <span>高低差</span></span></label>
           <div class="unit-input">
             <input id="slopeRise" type="number" value="45" inputmode="decimal" />
             <span class="unit">mm</span>
@@ -92,7 +95,7 @@
     <div id="panel-run" class="panel hidden">
       <div class="grid-2">
         <div class="field">
-          <label>勾配</label>
+          <label><span class="icon-label">∠ <span>勾配</span></span></label>
           <div class="input-mode-row">
             <button id="runInputModePercent" class="btn active" type="button">%</button>
             <button id="runInputModeFraction" class="btn" type="button">1/x</button>
@@ -116,7 +119,7 @@
           </div>
         </div>
         <div class="field">
-          <label for="runRise">高低差</label>
+          <label for="runRise"><span class="icon-label">⇅ <span>高低差</span></span></label>
           <div class="unit-input">
             <input id="runRise" type="number" value="45" inputmode="decimal" />
             <span class="unit">mm</span>
@@ -128,7 +131,7 @@
     <div id="panel-rise" class="panel hidden">
       <div class="grid-2">
         <div class="field">
-          <label>勾配</label>
+          <label><span class="icon-label">∠ <span>勾配</span></span></label>
           <div class="input-mode-row">
             <button id="riseInputModePercent" class="btn active" type="button">%</button>
             <button id="riseInputModeFraction" class="btn" type="button">1/x</button>
@@ -152,7 +155,7 @@
           </div>
         </div>
         <div class="field">
-          <label for="riseRun">水平距離</label>
+          <label for="riseRun"><span class="icon-label">⇄ <span>水平距離</span></span></label>
           <div class="unit-input">
             <input id="riseRun" type="number" value="3000" inputmode="decimal" />
             <span class="unit">mm</span>
@@ -162,18 +165,24 @@
     </div>
 
     <div class="panel">
-      <div class="summary-layout">
+      <div id="result-slope" class="summary-layout">
         <div class="summary-box summary-full">
-          <div class="k">勾配</div>
+          <div class="k"><span class="icon-box">∠</span>勾配</div>
           <div class="v" id="resultPercent">-- %</div>
           <div class="s" id="resultFraction">--</div>
         </div>
-        <div class="summary-box">
-          <div class="k">水平距離</div>
+      </div>
+
+      <div id="result-run" class="summary-layout hidden">
+        <div class="summary-box summary-full">
+          <div class="k"><span class="icon-box">⇄</span>水平距離</div>
           <div class="v" id="resultRun">-- mm</div>
         </div>
-        <div class="summary-box">
-          <div class="k">高低差</div>
+      </div>
+
+      <div id="result-rise" class="summary-layout hidden">
+        <div class="summary-box summary-full">
+          <div class="k"><span class="icon-box">⇅</span>高低差</div>
           <div class="v" id="resultRise">-- mm</div>
         </div>
       </div>
@@ -210,6 +219,9 @@
       runFractionWrap: document.getElementById('runFractionWrap'),
       risePercentWrap: document.getElementById('risePercentWrap'),
       riseFractionWrap: document.getElementById('riseFractionWrap'),
+      resultSlope: document.getElementById('result-slope'),
+      resultRunWrap: document.getElementById('result-run'),
+      resultRiseWrap: document.getElementById('result-rise'),
       resultPercent: document.getElementById('resultPercent'),
       resultFraction: document.getElementById('resultFraction'),
       resultRun: document.getElementById('resultRun'),
@@ -309,6 +321,9 @@
       els.panelSlope.classList.toggle('hidden', mode !== 'slope');
       els.panelRun.classList.toggle('hidden', mode !== 'run');
       els.panelRise.classList.toggle('hidden', mode !== 'rise');
+      els.resultSlope.classList.toggle('hidden', mode !== 'slope');
+      els.resultRunWrap.classList.toggle('hidden', mode !== 'run');
+      els.resultRiseWrap.classList.toggle('hidden', mode !== 'rise');
       recalc();
     }
 
@@ -319,15 +334,11 @@
         if (run <= 0){
           els.resultPercent.textContent = '-- %';
           els.resultFraction.textContent = '--';
-          els.resultRun.textContent = '-- mm';
-          els.resultRise.textContent = '-- mm';
           return;
         }
         const percent = (rise / run) * 100;
         els.resultPercent.textContent = formatPercent(percent);
         els.resultFraction.textContent = approximateFraction(percent);
-        els.resultRun.textContent = formatMm(run);
-        els.resultRise.textContent = formatMm(rise);
         updateQuickActive(percent);
         syncPercentInputs(percent);
         return;
@@ -337,17 +348,11 @@
         const percent = getRunPercent();
         const rise = num(els.runRise.value);
         if (percent <= 0){
-          els.resultPercent.textContent = '-- %';
-          els.resultFraction.textContent = '--';
           els.resultRun.textContent = '-- mm';
-          els.resultRise.textContent = formatMm(rise);
           return;
         }
         const run = rise / (percent / 100);
-        els.resultPercent.textContent = formatPercent(percent);
-        els.resultFraction.textContent = approximateFraction(percent);
         els.resultRun.textContent = formatMm(run);
-        els.resultRise.textContent = formatMm(rise);
         updateQuickActive(percent);
         syncPercentInputs(percent);
         return;
@@ -356,16 +361,10 @@
       const percent = getRisePercent();
       const run = num(els.riseRun.value);
       if (percent <= 0){
-        els.resultPercent.textContent = '-- %';
-        els.resultFraction.textContent = '--';
-        els.resultRun.textContent = formatMm(run);
         els.resultRise.textContent = '-- mm';
         return;
       }
       const rise = run * (percent / 100);
-      els.resultPercent.textContent = formatPercent(percent);
-      els.resultFraction.textContent = approximateFraction(percent);
-      els.resultRun.textContent = formatMm(run);
       els.resultRise.textContent = formatMm(rise);
       updateQuickActive(percent);
       syncPercentInputs(percent);
