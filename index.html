@@ -16,8 +16,6 @@
     .app{max-width:960px;margin:0 auto;padding:14px}
     .panel{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:14px;margin-bottom:12px}
     h1{margin:0;font-size:22px}
-    .sub{font-size:13px;color:var(--muted);margin-top:4px}
-    .section-title{font-size:15px;font-weight:900;margin:0}
     .field{margin-bottom:12px}
     .field:last-child{margin-bottom:0}
     label{display:block;font-size:13px;font-weight:800;margin-bottom:6px}
@@ -44,9 +42,9 @@
     .summary-box .v{font-size:24px;font-weight:900;line-height:1.2}
     .summary-box .s{font-size:13px;font-weight:800;color:var(--muted);margin-top:4px;min-height:18px}
     .hidden{display:none!important}
-    .note{font-size:12px;color:var(--muted);margin-top:8px}
     .input-mode-row{display:flex;gap:8px;margin-bottom:8px}
     .input-mode-row .btn{flex:1;min-height:40px;font-size:14px;padding:8px 12px}
+    .quick-inline{margin-top:10px}
     @media (max-width:700px){
       .grid-2{grid-template-columns:1fr}
       .summary-layout{grid-template-columns:1fr 1fr}
@@ -58,7 +56,6 @@
   <div class="app">
     <div class="panel">
       <h1>勾配計算アプリ</h1>
-      <div class="sub">土間数量アプリに近い見た目の1ファイル版です。単位は mm 固定です。</div>
     </div>
 
     <div class="panel">
@@ -67,18 +64,6 @@
         <button id="modeRun" class="btn" type="button">水平距離を出す</button>
         <button id="modeRise" class="btn" type="button">高低差を出す</button>
       </div>
-    </div>
-
-    <div class="panel">
-      <div class="section-title">よく使う勾配</div>
-      <div class="quick-row" style="margin-top:10px;">
-        <button class="btn quick-btn" data-percent="1" type="button">1%</button>
-        <button class="btn quick-btn" data-percent="1.5" type="button">1.5%</button>
-        <button class="btn quick-btn" data-percent="2" type="button">2%</button>
-        <button class="btn quick-btn" data-percent="3" type="button">3%</button>
-        <button class="btn quick-btn" data-percent="8.3333333333" type="button">1/12</button>
-      </div>
-      <div class="note">1/12 は約 8.33% として計算します。</div>
     </div>
 
     <div id="panel-slope" class="panel">
@@ -98,6 +83,15 @@
           </div>
         </div>
       </div>
+      <div class="quick-inline">
+        <div class="quick-row">
+          <button class="btn quick-btn" data-percent="1" type="button">1%</button>
+          <button class="btn quick-btn" data-percent="1.5" type="button">1.5%</button>
+          <button class="btn quick-btn" data-percent="2" type="button">2%</button>
+          <button class="btn quick-btn" data-percent="3" type="button">3%</button>
+          <button class="btn quick-btn" data-percent="8.3333333333" type="button">1/12</button>
+        </div>
+      </div>
     </div>
 
     <div id="panel-run" class="panel hidden">
@@ -106,7 +100,7 @@
           <label>勾配</label>
           <div class="input-mode-row">
             <button id="runInputModePercent" class="btn active" type="button">%</button>
-            <button id="runInputModeFraction" class="btn" type="button">1:x</button>
+            <button id="runInputModeFraction" class="btn" type="button">1/x</button>
           </div>
           <div id="runPercentWrap" class="unit-input">
             <input id="runPercent" type="number" value="1.5" step="0.01" inputmode="decimal" />
@@ -114,7 +108,16 @@
           </div>
           <div id="runFractionWrap" class="unit-input hidden">
             <input id="runFraction" type="number" value="66.67" step="0.01" inputmode="decimal" />
-            <span class="unit">1:x</span>
+            <span class="unit">1/x</span>
+          </div>
+          <div class="quick-inline">
+            <div class="quick-row">
+              <button class="btn quick-btn" data-percent="1" type="button">1%</button>
+              <button class="btn quick-btn" data-percent="1.5" type="button">1.5%</button>
+              <button class="btn quick-btn" data-percent="2" type="button">2%</button>
+              <button class="btn quick-btn" data-percent="3" type="button">3%</button>
+              <button class="btn quick-btn" data-percent="8.3333333333" type="button">1/12</button>
+            </div>
           </div>
         </div>
         <div class="field">
@@ -133,7 +136,7 @@
           <label>勾配</label>
           <div class="input-mode-row">
             <button id="riseInputModePercent" class="btn active" type="button">%</button>
-            <button id="riseInputModeFraction" class="btn" type="button">1:x</button>
+            <button id="riseInputModeFraction" class="btn" type="button">1/x</button>
           </div>
           <div id="risePercentWrap" class="unit-input">
             <input id="risePercent" type="number" value="1.5" step="0.01" inputmode="decimal" />
@@ -141,7 +144,16 @@
           </div>
           <div id="riseFractionWrap" class="unit-input hidden">
             <input id="riseFraction" type="number" value="66.67" step="0.01" inputmode="decimal" />
-            <span class="unit">1:x</span>
+            <span class="unit">1/x</span>
+          </div>
+          <div class="quick-inline">
+            <div class="quick-row">
+              <button class="btn quick-btn" data-percent="1" type="button">1%</button>
+              <button class="btn quick-btn" data-percent="1.5" type="button">1.5%</button>
+              <button class="btn quick-btn" data-percent="2" type="button">2%</button>
+              <button class="btn quick-btn" data-percent="3" type="button">3%</button>
+              <button class="btn quick-btn" data-percent="8.3333333333" type="button">1/12</button>
+            </div>
           </div>
         </div>
         <div class="field">
@@ -253,7 +265,7 @@
           best = c;
         }
       }
-      return `約 1/${roundSmart(best)}`;
+      return `1/${roundSmart(best)}`;
     }
 
     function syncPercentInputs(percent){
