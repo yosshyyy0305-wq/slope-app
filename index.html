@@ -26,6 +26,8 @@
     input:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(31,111,214,.12)}
     .button-row,.quick-row{display:flex;gap:8px;flex-wrap:wrap}
     .button-row .btn,.quick-row .btn{flex:1}
+    .tab-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+    .tab-row .btn{width:100%;white-space:nowrap;letter-spacing:-0.02em}
     .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
     .summary-layout{display:grid;grid-template-columns:1fr 1fr;gap:10px}
     .summary-full{grid-column:1 / -1}
@@ -49,6 +51,8 @@
       .grid-2{grid-template-columns:1fr}
       .summary-layout{grid-template-columns:1fr 1fr}
       .summary-full{grid-column:1 / -1}
+      .tab-row{gap:6px}
+      .tab-row .btn{font-size:13px;padding:10px 8px}
     }
   </style>
 </head>
@@ -59,7 +63,7 @@
     </div>
 
     <div class="panel">
-      <div class="button-row">
+      <div class="tab-row">
         <button id="modeSlope" class="btn active" type="button">勾配を出す</button>
         <button id="modeRun" class="btn" type="button">水平距離を出す</button>
         <button id="modeRise" class="btn" type="button">高低差を出す</button>
@@ -81,15 +85,6 @@
             <input id="slopeRise" type="number" value="45" inputmode="decimal" />
             <span class="unit">mm</span>
           </div>
-        </div>
-      </div>
-      <div class="quick-inline">
-        <div class="quick-row">
-          <button class="btn quick-btn" data-percent="1" type="button">1%</button>
-          <button class="btn quick-btn" data-percent="1.5" type="button">1.5%</button>
-          <button class="btn quick-btn" data-percent="2" type="button">2%</button>
-          <button class="btn quick-btn" data-percent="3" type="button">3%</button>
-          <button class="btn quick-btn" data-percent="8.3333333333" type="button">1/12</button>
         </div>
       </div>
     </div>
