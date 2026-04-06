@@ -76,9 +76,9 @@
     .input-mode-row .btn{min-height:40px;font-size:14px;padding:8px 10px}
 
     .quick-inline{margin-top:10px}
-    .quick-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
-    .quick-grid .btn{font-size:13px;padding:10px 8px;min-height:42px;white-space:nowrap}
-    .quick-grid .wide{grid-column:span 2}
+    .quick-grid-top{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+    .quick-grid-bottom{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:8px}
+    .quick-grid-top .btn,.quick-grid-bottom .btn{font-size:13px;padding:10px 8px;min-height:42px;white-space:nowrap}
 
     .summary-layout{display:grid;grid-template-columns:1fr;gap:10px}
     .summary-box{border:1px solid var(--line);border-radius:14px;background:#f8fbff;padding:12px}
@@ -92,8 +92,9 @@
       .grid-2{grid-template-columns:1fr}
       .tab-row{gap:6px}
       .tab-row .btn{font-size:13px;padding:10px 6px}
-      .quick-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
-      .quick-grid .btn{font-size:12px;padding:9px 6px}
+      .quick-grid-top{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+      .quick-grid-bottom{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin-top:6px}
+      .quick-grid-top .btn,.quick-grid-bottom .btn{font-size:12px;padding:9px 6px}
     }
   </style>
 </head>
@@ -132,31 +133,19 @@
 
     <div id="panel-run" class="panel hidden">
       <div class="grid-2">
-        <div>
-          <div class="field">
-            <label><span class="icon-label">∠ <span>勾配</span></span></label>
-            <div class="input-mode-row">
-              <button id="runInputModePercent" class="btn active" type="button">%</button>
-              <button id="runInputModeFraction" class="btn" type="button">1/x</button>
-            </div>
-            <div id="runPercentWrap" class="unit-input">
-              <input id="runPercent" type="number" value="1.5" step="0.01" inputmode="decimal" />
-              <span class="unit">%</span>
-            </div>
-            <div id="runFractionWrap" class="unit-input hidden">
-              <input id="runFraction" type="number" value="66.67" step="0.01" inputmode="decimal" />
-              <span class="unit">1/x</span>
-            </div>
+        <div class="field">
+          <label><span class="icon-label">∠ <span>勾配</span></span></label>
+          <div class="input-mode-row">
+            <button id="runInputModePercent" class="btn active" type="button">%</button>
+            <button id="runInputModeFraction" class="btn" type="button">1/x</button>
           </div>
-          <div class="quick-inline">
-            <div class="quick-grid">
-              <button class="btn quick-btn" data-percent="1" type="button">1%</button>
-              <button class="btn quick-btn" data-percent="1.5" type="button">1.5%</button>
-              <button class="btn quick-btn" data-percent="2" type="button">2%</button>
-              <button class="btn quick-btn" data-percent="3" type="button">3%</button>
-              <button class="btn quick-btn wide" data-percent="12.5" type="button">1/8（建基法）</button>
-              <button class="btn quick-btn wide" data-percent="8.3333333333" type="button">1/12（バリア法）</button>
-            </div>
+          <div id="runPercentWrap" class="unit-input">
+            <input id="runPercent" type="number" value="1.5" step="0.01" inputmode="decimal" />
+            <span class="unit">%</span>
+          </div>
+          <div id="runFractionWrap" class="unit-input hidden">
+            <input id="runFraction" type="number" value="66.67" step="0.01" inputmode="decimal" />
+            <span class="unit">1/x</span>
           </div>
         </div>
         <div class="field">
@@ -167,35 +156,35 @@
           </div>
         </div>
       </div>
+      <div class="quick-inline">
+        <div class="quick-grid-top">
+          <button class="btn quick-btn" data-percent="1" type="button">1%</button>
+          <button class="btn quick-btn" data-percent="1.5" type="button">1.5%</button>
+          <button class="btn quick-btn" data-percent="2" type="button">2%</button>
+          <button class="btn quick-btn" data-percent="3" type="button">3%</button>
+        </div>
+        <div class="quick-grid-bottom">
+          <button class="btn quick-btn" data-percent="12.5" type="button">1/8（建基法）</button>
+          <button class="btn quick-btn" data-percent="8.3333333333" type="button">1/12（バリア法）</button>
+        </div>
+      </div>
     </div>
 
     <div id="panel-rise" class="panel hidden">
       <div class="grid-2">
-        <div>
-          <div class="field">
-            <label><span class="icon-label">∠ <span>勾配</span></span></label>
-            <div class="input-mode-row">
-              <button id="riseInputModePercent" class="btn active" type="button">%</button>
-              <button id="riseInputModeFraction" class="btn" type="button">1/x</button>
-            </div>
-            <div id="risePercentWrap" class="unit-input">
-              <input id="risePercent" type="number" value="1.5" step="0.01" inputmode="decimal" />
-              <span class="unit">%</span>
-            </div>
-            <div id="riseFractionWrap" class="unit-input hidden">
-              <input id="riseFraction" type="number" value="66.67" step="0.01" inputmode="decimal" />
-              <span class="unit">1/x</span>
-            </div>
+        <div class="field">
+          <label><span class="icon-label">∠ <span>勾配</span></span></label>
+          <div class="input-mode-row">
+            <button id="riseInputModePercent" class="btn active" type="button">%</button>
+            <button id="riseInputModeFraction" class="btn" type="button">1/x</button>
           </div>
-          <div class="quick-inline">
-            <div class="quick-grid">
-              <button class="btn quick-btn" data-percent="1" type="button">1%</button>
-              <button class="btn quick-btn" data-percent="1.5" type="button">1.5%</button>
-              <button class="btn quick-btn" data-percent="2" type="button">2%</button>
-              <button class="btn quick-btn" data-percent="3" type="button">3%</button>
-              <button class="btn quick-btn wide" data-percent="12.5" type="button">1/8（建基法）</button>
-              <button class="btn quick-btn wide" data-percent="8.3333333333" type="button">1/12（バリア法）</button>
-            </div>
+          <div id="risePercentWrap" class="unit-input">
+            <input id="risePercent" type="number" value="1.5" step="0.01" inputmode="decimal" />
+            <span class="unit">%</span>
+          </div>
+          <div id="riseFractionWrap" class="unit-input hidden">
+            <input id="riseFraction" type="number" value="66.67" step="0.01" inputmode="decimal" />
+            <span class="unit">1/x</span>
           </div>
         </div>
         <div class="field">
@@ -204,6 +193,18 @@
             <input id="riseRun" type="number" value="3000" inputmode="decimal" />
             <span class="unit">mm</span>
           </div>
+        </div>
+      </div>
+      <div class="quick-inline">
+        <div class="quick-grid-top">
+          <button class="btn quick-btn" data-percent="1" type="button">1%</button>
+          <button class="btn quick-btn" data-percent="1.5" type="button">1.5%</button>
+          <button class="btn quick-btn" data-percent="2" type="button">2%</button>
+          <button class="btn quick-btn" data-percent="3" type="button">3%</button>
+        </div>
+        <div class="quick-grid-bottom">
+          <button class="btn quick-btn" data-percent="12.5" type="button">1/8（建基法）</button>
+          <button class="btn quick-btn" data-percent="8.3333333333" type="button">1/12（バリア法）</button>
         </div>
       </div>
     </div>
