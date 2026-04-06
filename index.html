@@ -5,551 +5,414 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>勾配計算アプリ</title>
   <style>
-    :root {
-      --bg: #f1f5f9;
-      --card: #ffffff;
-      --text: #0f172a;
-      --sub: #475569;
-      --line: #cbd5e1;
-      --accent: #0f172a;
-      --accent2: #059669;
-      --soft: #f8fafc;
-      --warn: #fef3c7;
-      --radius: 18px;
+    :root{
+      --bg:#eef5ff; --card:#ffffff; --text:#16324f; --muted:#5b728d; --line:#d7e4f4;
+      --blue:#1f6fd6; --blue-dark:#185bb0; --blue-soft:#dbeafe;
+      --shadow:0 8px 24px rgba(22,50,79,.08); --radius:16px;
     }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      -webkit-font-smoothing: antialiased;
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif}
+    body{padding-bottom:24px}
+    .app{max-width:960px;margin:0 auto;padding:14px}
+    .panel{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:14px;margin-bottom:12px}
+    h1{margin:0;font-size:22px}
+    .sub{font-size:13px;color:var(--muted);margin-top:4px}
+    .section-title{font-size:15px;font-weight:900;margin:0}
+    .field{margin-bottom:12px}
+    .field:last-child{margin-bottom:0}
+    label{display:block;font-size:13px;font-weight:800;margin-bottom:6px}
+    input[type="number"]{
+      width:100%;min-height:48px;border:1px solid var(--line);border-radius:12px;
+      padding:12px 14px;font-size:16px;color:var(--text);background:#fff;outline:none;appearance:none;
     }
-
-    .wrap {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 16px;
+    input:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(31,111,214,.12)}
+    .button-row,.quick-row{display:flex;gap:8px;flex-wrap:wrap}
+    .button-row .btn,.quick-row .btn{flex:1}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .summary-layout{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .summary-full{grid-column:1 / -1}
+    .btn{
+      min-height:44px;border-radius:12px;border:1px solid var(--line);background:#fff;color:var(--text);
+      padding:10px 14px;font-size:15px;font-weight:800;cursor:pointer
     }
-
-    .hero {
-      background: linear-gradient(135deg, #0f172a, #334155);
-      color: #fff;
-      border-radius: 24px;
-      padding: 18px;
-      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.18);
-    }
-
-    .hero h1 {
-      margin: 0 0 8px;
-      font-size: 28px;
-    }
-
-    .hero p {
-      margin: 0;
-      color: #e2e8f0;
-      font-size: 14px;
-      line-height: 1.6;
-    }
-
-    .card {
-      background: var(--card);
-      border: 1px solid #e2e8f0;
-      border-radius: 22px;
-      padding: 16px;
-      margin-top: 14px;
-      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
-    }
-
-    .toolbar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      align-items: center;
-    }
-
-    .spacer {
-      flex: 1 1 auto;
-    }
-
-    button {
-      border: 0;
-      cursor: pointer;
-      font: inherit;
-    }
-
-    .tab, .unit-btn, .preset-btn {
-      border-radius: 14px;
-      padding: 11px 14px;
-      font-weight: 700;
-      font-size: 14px;
-    }
-
-    .tab {
-      background: #e2e8f0;
-      color: #334155;
-    }
-
-    .tab.active {
-      background: var(--accent);
-      color: #fff;
-    }
-
-    .unit-btn {
-      background: #ecfdf5;
-      color: #047857;
-    }
-
-    .unit-btn.active {
-      background: var(--accent2);
-      color: #fff;
-    }
-
-    .preset-btn {
-      background: #f1f5f9;
-      color: #334155;
-      padding: 10px 12px;
-    }
-
-    .grid {
-      display: grid;
-      gap: 14px;
-      margin-top: 14px;
-    }
-
-    @media (min-width: 760px) {
-      .grid.two {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
-
-    .field {
-      margin-bottom: 14px;
-    }
-
-    .field:last-child {
-      margin-bottom: 0;
-    }
-
-    .label {
-      display: block;
-      margin-bottom: 8px;
-      font-size: 14px;
-      font-weight: 700;
-      color: #334155;
-    }
-
-    input[type="number"] {
-      width: 100%;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      padding: 14px 14px;
-      font-size: 17px;
-      background: #fff;
-      outline: none;
-    }
-
-    input[type="number"]:focus {
-      border-color: #94a3b8;
-      box-shadow: 0 0 0 3px rgba(148, 163, 184, 0.22);
-    }
-
-    .row-title {
-      margin: 0 0 10px;
-      font-size: 14px;
-      font-weight: 700;
-      color: #475569;
-    }
-
-    .preset-wrap {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .result-list {
-      display: grid;
-      gap: 10px;
-    }
-
-    .result {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      background: var(--soft);
-      border-radius: 16px;
-      padding: 14px;
-    }
-
-    .result.main {
-      background: var(--accent);
-      color: #fff;
-    }
-
-    .result .name {
-      font-size: 14px;
-    }
-
-    .result .value {
-      font-weight: 800;
-      font-size: 17px;
-      text-align: right;
-    }
-
-    .result.main .value {
-      font-size: 20px;
-    }
-
-    .notes {
-      display: grid;
-      gap: 12px;
-      margin-top: 14px;
-    }
-
-    @media (min-width: 760px) {
-      .notes {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
-
-    .note-box {
-      border-radius: 18px;
-      padding: 14px;
-      background: #f8fafc;
-    }
-
-    .note-box.warn {
-      background: var(--warn);
-    }
-
-    .note-box h3 {
-      margin: 0 0 8px;
-      font-size: 15px;
-    }
-
-    .note-box ul {
-      margin: 0;
-      padding-left: 18px;
-      color: #475569;
-      font-size: 14px;
-      line-height: 1.7;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    .helper {
-      margin-top: 8px;
-      font-size: 12px;
-      color: #64748b;
-    }
-
-    .footer-box {
-      margin-top: 14px;
-      font-size: 13px;
-      color: #64748b;
-      text-align: center;
+    .btn.active{background:var(--blue-soft);border-color:#9dc3f8;color:var(--blue-dark)}
+    .unit-input{position:relative}
+    .unit-input input{padding-right:68px}
+    .unit{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:13px;font-weight:800;color:var(--muted);pointer-events:none}
+    .summary-box{border:1px solid var(--line);border-radius:14px;background:#f8fbff;padding:12px}
+    .summary-box .k{font-size:12px;font-weight:800;color:var(--muted);margin-bottom:6px}
+    .summary-box .v{font-size:24px;font-weight:900;line-height:1.2}
+    .summary-box .s{font-size:13px;font-weight:800;color:var(--muted);margin-top:4px;min-height:18px}
+    .hidden{display:none!important}
+    .note{font-size:12px;color:var(--muted);margin-top:8px}
+    .input-mode-row{display:flex;gap:8px;margin-bottom:8px}
+    .input-mode-row .btn{flex:1;min-height:40px;font-size:14px;padding:8px 12px}
+    @media (max-width:700px){
+      .grid-2{grid-template-columns:1fr}
+      .summary-layout{grid-template-columns:1fr 1fr}
+      .summary-full{grid-column:1 / -1}
     }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <section class="hero">
+  <div class="app">
+    <div class="panel">
       <h1>勾配計算アプリ</h1>
-      <p>1ファイル版。GitHub にそのまま置きやすい形です。高低差・勾配比・％ から相互計算できます。</p>
-    </section>
+      <div class="sub">土間数量アプリに近い見た目の1ファイル版です。単位は mm 固定です。</div>
+    </div>
 
-    <section class="card">
-      <div class="toolbar">
-        <button class="tab active" data-mode="dimensions">高低差から計算</button>
-        <button class="tab" data-mode="ratio">1:x から計算</button>
-        <button class="tab" data-mode="percent">% から計算</button>
-        <div class="spacer"></div>
-        <button class="unit-btn active" data-unit="mm">mm</button>
-        <button class="unit-btn" data-unit="cm">cm</button>
-        <button class="unit-btn" data-unit="m">m</button>
+    <div class="panel">
+      <div class="button-row">
+        <button id="modeSlope" class="btn active" type="button">勾配を出す</button>
+        <button id="modeRun" class="btn" type="button">水平距離を出す</button>
+        <button id="modeRise" class="btn" type="button">高低差を出す</button>
       </div>
-    </section>
+    </div>
 
-    <section id="panel-dimensions" class="grid two">
-      <div class="card">
+    <div class="panel">
+      <div class="section-title">よく使う勾配</div>
+      <div class="quick-row" style="margin-top:10px;">
+        <button class="btn quick-btn" data-percent="1" type="button">1%</button>
+        <button class="btn quick-btn" data-percent="1.5" type="button">1.5%</button>
+        <button class="btn quick-btn" data-percent="2" type="button">2%</button>
+        <button class="btn quick-btn" data-percent="3" type="button">3%</button>
+        <button class="btn quick-btn" data-percent="8.3333333333" type="button">1/12</button>
+      </div>
+      <div class="note">1/12 は約 8.33% として計算します。</div>
+    </div>
+
+    <div id="panel-slope" class="panel">
+      <div class="grid-2">
         <div class="field">
-          <label class="label" for="run">水平距離</label>
-          <input id="run" type="number" value="3000" inputmode="decimal" />
-        </div>
-        <div class="field">
-          <label class="label" for="rise">高低差</label>
-          <input id="rise" type="number" value="50" inputmode="decimal" />
-        </div>
-        <div>
-          <div class="row-title">よく使う勾配の目安</div>
-          <div class="preset-wrap">
-            <button class="preset-btn" data-fill-ratio="30">1/30</button>
-            <button class="preset-btn" data-fill-ratio="50">1/50</button>
-            <button class="preset-btn" data-fill-ratio="60">1/60</button>
-            <button class="preset-btn" data-fill-ratio="80">1/80</button>
-            <button class="preset-btn" data-fill-ratio="100">1/100</button>
+          <label for="slopeRun">水平距離</label>
+          <div class="unit-input">
+            <input id="slopeRun" type="number" value="3000" inputmode="decimal" />
+            <span class="unit">mm</span>
           </div>
-          <div class="helper">押すと「1:x」欄にも反映されます。</div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="result-list">
-          <div class="result main"><div class="name">勾配比</div><div class="value" id="dim-ratio">-</div></div>
-          <div class="result"><div class="name">勾配（%）</div><div class="value" id="dim-percent">-</div></div>
-          <div class="result"><div class="name">角度</div><div class="value" id="dim-angle">-</div></div>
-          <div class="result"><div class="name">1mあたりの高低差</div><div class="value" id="dim-drop">-</div></div>
-        </div>
-      </div>
-    </section>
-
-    <section id="panel-ratio" class="grid two hidden">
-      <div class="card">
-        <div class="field">
-          <label class="label" for="ratioX">勾配比（1 : x）の x</label>
-          <input id="ratioX" type="number" value="60" inputmode="decimal" />
         </div>
         <div class="field">
-          <label class="label" for="ratioRun">水平距離</label>
-          <input id="ratioRun" type="number" value="3000" inputmode="decimal" />
-        </div>
-        <div>
-          <div class="row-title">よく使う勾配の目安</div>
-          <div class="preset-wrap">
-            <button class="preset-btn" data-ratio="30">1/30</button>
-            <button class="preset-btn" data-ratio="50">1/50</button>
-            <button class="preset-btn" data-ratio="60">1/60</button>
-            <button class="preset-btn" data-ratio="80">1/80</button>
-            <button class="preset-btn" data-ratio="100">1/100</button>
+          <label for="slopeRise">高低差</label>
+          <div class="unit-input">
+            <input id="slopeRise" type="number" value="45" inputmode="decimal" />
+            <span class="unit">mm</span>
           </div>
         </div>
       </div>
+    </div>
 
-      <div class="card">
-        <div class="result-list">
-          <div class="result main"><div class="name">必要な高低差</div><div class="value" id="ratio-rise">-</div></div>
-          <div class="result"><div class="name">勾配（%）</div><div class="value" id="ratio-percent">-</div></div>
-          <div class="result"><div class="name">角度</div><div class="value" id="ratio-angle">-</div></div>
-          <div class="result"><div class="name">1mあたりの高低差</div><div class="value" id="ratio-drop">-</div></div>
-        </div>
-      </div>
-    </section>
-
-    <section id="panel-percent" class="grid two hidden">
-      <div class="card">
+    <div id="panel-run" class="panel hidden">
+      <div class="grid-2">
         <div class="field">
-          <label class="label" for="percentVal">勾配（%）</label>
-          <input id="percentVal" type="number" value="1.5" step="0.1" inputmode="decimal" />
+          <label>勾配</label>
+          <div class="input-mode-row">
+            <button id="runInputModePercent" class="btn active" type="button">%</button>
+            <button id="runInputModeFraction" class="btn" type="button">1:x</button>
+          </div>
+          <div id="runPercentWrap" class="unit-input">
+            <input id="runPercent" type="number" value="1.5" step="0.01" inputmode="decimal" />
+            <span class="unit">%</span>
+          </div>
+          <div id="runFractionWrap" class="unit-input hidden">
+            <input id="runFraction" type="number" value="66.67" step="0.01" inputmode="decimal" />
+            <span class="unit">1:x</span>
+          </div>
         </div>
         <div class="field">
-          <label class="label" for="percentRun">水平距離</label>
-          <input id="percentRun" type="number" value="3000" inputmode="decimal" />
+          <label for="runRise">高低差</label>
+          <div class="unit-input">
+            <input id="runRise" type="number" value="45" inputmode="decimal" />
+            <span class="unit">mm</span>
+          </div>
         </div>
       </div>
+    </div>
 
-      <div class="card">
-        <div class="result-list">
-          <div class="result main"><div class="name">必要な高低差</div><div class="value" id="percent-rise">-</div></div>
-          <div class="result"><div class="name">勾配比</div><div class="value" id="percent-ratio">-</div></div>
-          <div class="result"><div class="name">角度</div><div class="value" id="percent-angle">-</div></div>
-          <div class="result"><div class="name">1mあたりの高低差</div><div class="value" id="percent-drop">-</div></div>
+    <div id="panel-rise" class="panel hidden">
+      <div class="grid-2">
+        <div class="field">
+          <label>勾配</label>
+          <div class="input-mode-row">
+            <button id="riseInputModePercent" class="btn active" type="button">%</button>
+            <button id="riseInputModeFraction" class="btn" type="button">1:x</button>
+          </div>
+          <div id="risePercentWrap" class="unit-input">
+            <input id="risePercent" type="number" value="1.5" step="0.01" inputmode="decimal" />
+            <span class="unit">%</span>
+          </div>
+          <div id="riseFractionWrap" class="unit-input hidden">
+            <input id="riseFraction" type="number" value="66.67" step="0.01" inputmode="decimal" />
+            <span class="unit">1:x</span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="riseRun">水平距離</label>
+          <div class="unit-input">
+            <input id="riseRun" type="number" value="3000" inputmode="decimal" />
+            <span class="unit">mm</span>
+          </div>
         </div>
       </div>
-    </section>
+    </div>
 
-    <section class="card">
-      <div class="notes">
-        <div class="note-box">
-          <h3>次に追加しやすいもの</h3>
-          <ul>
-            <li>水下方向の矢印表示</li>
-            <li>桝・U字溝までの落とし込み計算</li>
-            <li>土間・アプローチ・犬走りの推奨勾配ボタン</li>
-            <li>複数区画の連続計算</li>
-          </ul>
+    <div class="panel">
+      <div class="summary-layout">
+        <div class="summary-box summary-full">
+          <div class="k">勾配</div>
+          <div class="v" id="resultPercent">-- %</div>
+          <div class="s" id="resultFraction">--</div>
         </div>
-        <div class="note-box warn">
-          <h3>今の仕様</h3>
-          <ul>
-            <li>単純な一直線勾配の計算</li>
-            <li>単位は mm / cm / m 切替</li>
-            <li>勾配比・%・角度を相互確認</li>
-            <li>GitHub に上げやすい1ファイル版</li>
-          </ul>
+        <div class="summary-box">
+          <div class="k">水平距離</div>
+          <div class="v" id="resultRun">-- mm</div>
+        </div>
+        <div class="summary-box">
+          <div class="k">高低差</div>
+          <div class="v" id="resultRise">-- mm</div>
         </div>
       </div>
-      <div class="footer-box">index.html として保存すれば、そのまま GitHub にアップできます。</div>
-    </section>
+    </div>
   </div>
 
   <script>
     const state = {
-      mode: 'dimensions',
-      unit: 'mm'
+      mode: 'slope',
+      runInputMode: 'percent',
+      riseInputMode: 'percent'
     };
 
-    const $ = (id) => document.getElementById(id);
-    const num = (v) => {
+    const els = {
+      modeSlope: document.getElementById('modeSlope'),
+      modeRun: document.getElementById('modeRun'),
+      modeRise: document.getElementById('modeRise'),
+      panelSlope: document.getElementById('panel-slope'),
+      panelRun: document.getElementById('panel-run'),
+      panelRise: document.getElementById('panel-rise'),
+      slopeRun: document.getElementById('slopeRun'),
+      slopeRise: document.getElementById('slopeRise'),
+      runPercent: document.getElementById('runPercent'),
+      runFraction: document.getElementById('runFraction'),
+      runRise: document.getElementById('runRise'),
+      risePercent: document.getElementById('risePercent'),
+      riseFraction: document.getElementById('riseFraction'),
+      riseRun: document.getElementById('riseRun'),
+      runInputModePercent: document.getElementById('runInputModePercent'),
+      runInputModeFraction: document.getElementById('runInputModeFraction'),
+      riseInputModePercent: document.getElementById('riseInputModePercent'),
+      riseInputModeFraction: document.getElementById('riseInputModeFraction'),
+      runPercentWrap: document.getElementById('runPercentWrap'),
+      runFractionWrap: document.getElementById('runFractionWrap'),
+      risePercentWrap: document.getElementById('risePercentWrap'),
+      riseFractionWrap: document.getElementById('riseFractionWrap'),
+      resultPercent: document.getElementById('resultPercent'),
+      resultFraction: document.getElementById('resultFraction'),
+      resultRun: document.getElementById('resultRun'),
+      resultRise: document.getElementById('resultRise'),
+      quickButtons: Array.from(document.querySelectorAll('.quick-btn'))
+    };
+
+    function num(v){
       const n = parseFloat(v);
       return Number.isFinite(n) ? n : 0;
-    };
-
-    function toMm(value) {
-      const n = num(value);
-      if (state.unit === 'mm') return n;
-      if (state.unit === 'cm') return n * 10;
-      return n * 1000;
     }
 
-    function formatByUnit(mm) {
-      if (!Number.isFinite(mm)) return '-';
-      if (state.unit === 'mm') return mm.toFixed(1) + ' mm';
-      if (state.unit === 'cm') return (mm / 10).toFixed(2) + ' cm';
-      return (mm / 1000).toFixed(3) + ' m';
+    function roundSmart(v){
+      if (!Number.isFinite(v)) return '--';
+      if (Math.abs(v - Math.round(v)) < 0.000001) return String(Math.round(v));
+      if (Math.abs(v) >= 100) return v.toFixed(1).replace(/\.0$/, '');
+      return v.toFixed(2).replace(/0+$/, '').replace(/\.$/, '');
     }
 
-    function safeText(el, text) {
-      el.textContent = text;
+    function formatMm(v){
+      return Number.isFinite(v) ? `${roundSmart(v)} mm` : '-- mm';
     }
 
-    function calcDimensions() {
-      const runMm = toMm($('run').value);
-      const riseMm = toMm($('rise').value);
+    function formatPercent(v){
+      return Number.isFinite(v) ? `${roundSmart(v)} %` : '-- %';
+    }
 
-      if (runMm <= 0) {
-        safeText($('dim-ratio'), '-');
-        safeText($('dim-percent'), '-');
-        safeText($('dim-angle'), '-');
-        safeText($('dim-drop'), '-');
+    function percentToFraction(percent){
+      if (!Number.isFinite(percent) || percent <= 0) return 0;
+      return 100 / percent;
+    }
+
+    function fractionToPercent(denom){
+      if (!Number.isFinite(denom) || denom <= 0) return 0;
+      return 100 / denom;
+    }
+
+    function approximateFraction(percent){
+      if (!Number.isFinite(percent) || percent <= 0) return '--';
+      const exactDenom = 100 / percent;
+      const candidates = [10,12,15,20,30,40,50,60,80,100,120,150,200];
+      let best = candidates[0];
+      let diff = Math.abs(exactDenom - best);
+      for (const c of candidates){
+        const d = Math.abs(exactDenom - c);
+        if (d < diff){
+          diff = d;
+          best = c;
+        }
+      }
+      return `約 1/${roundSmart(best)}`;
+    }
+
+    function syncPercentInputs(percent){
+      if (!Number.isFinite(percent) || percent <= 0) return;
+      els.runPercent.value = roundSmart(percent);
+      els.risePercent.value = roundSmart(percent);
+      els.runFraction.value = roundSmart(percentToFraction(percent));
+      els.riseFraction.value = roundSmart(percentToFraction(percent));
+    }
+
+    function updateQuickActive(percent){
+      els.quickButtons.forEach(btn => {
+        const p = Number(btn.dataset.percent);
+        btn.classList.toggle('active', Math.abs(p - percent) < 0.0001);
+      });
+    }
+
+    function getRunPercent(){
+      return state.runInputMode === 'percent'
+        ? num(els.runPercent.value)
+        : fractionToPercent(num(els.runFraction.value));
+    }
+
+    function getRisePercent(){
+      return state.riseInputMode === 'percent'
+        ? num(els.risePercent.value)
+        : fractionToPercent(num(els.riseFraction.value));
+    }
+
+    function renderInputModes(){
+      els.runInputModePercent.classList.toggle('active', state.runInputMode === 'percent');
+      els.runInputModeFraction.classList.toggle('active', state.runInputMode === 'fraction');
+      els.riseInputModePercent.classList.toggle('active', state.riseInputMode === 'percent');
+      els.riseInputModeFraction.classList.toggle('active', state.riseInputMode === 'fraction');
+      els.runPercentWrap.classList.toggle('hidden', state.runInputMode !== 'percent');
+      els.runFractionWrap.classList.toggle('hidden', state.runInputMode !== 'fraction');
+      els.risePercentWrap.classList.toggle('hidden', state.riseInputMode !== 'percent');
+      els.riseFractionWrap.classList.toggle('hidden', state.riseInputMode !== 'fraction');
+    }
+
+    function setMode(mode){
+      state.mode = mode;
+      els.modeSlope.classList.toggle('active', mode === 'slope');
+      els.modeRun.classList.toggle('active', mode === 'run');
+      els.modeRise.classList.toggle('active', mode === 'rise');
+      els.panelSlope.classList.toggle('hidden', mode !== 'slope');
+      els.panelRun.classList.toggle('hidden', mode !== 'run');
+      els.panelRise.classList.toggle('hidden', mode !== 'rise');
+      recalc();
+    }
+
+    function recalc(){
+      if (state.mode === 'slope'){
+        const run = num(els.slopeRun.value);
+        const rise = num(els.slopeRise.value);
+        if (run <= 0){
+          els.resultPercent.textContent = '-- %';
+          els.resultFraction.textContent = '--';
+          els.resultRun.textContent = '-- mm';
+          els.resultRise.textContent = '-- mm';
+          return;
+        }
+        const percent = (rise / run) * 100;
+        els.resultPercent.textContent = formatPercent(percent);
+        els.resultFraction.textContent = approximateFraction(percent);
+        els.resultRun.textContent = formatMm(run);
+        els.resultRise.textContent = formatMm(rise);
+        updateQuickActive(percent);
+        syncPercentInputs(percent);
         return;
       }
 
-      if (riseMm === 0) {
-        safeText($('dim-ratio'), '水平');
-        safeText($('dim-percent'), '0.00 %');
-        safeText($('dim-angle'), '0.00 °');
-        safeText($('dim-drop'), '0.0 mm');
+      if (state.mode === 'run'){
+        const percent = getRunPercent();
+        const rise = num(els.runRise.value);
+        if (percent <= 0){
+          els.resultPercent.textContent = '-- %';
+          els.resultFraction.textContent = '--';
+          els.resultRun.textContent = '-- mm';
+          els.resultRise.textContent = formatMm(rise);
+          return;
+        }
+        const run = rise / (percent / 100);
+        els.resultPercent.textContent = formatPercent(percent);
+        els.resultFraction.textContent = approximateFraction(percent);
+        els.resultRun.textContent = formatMm(run);
+        els.resultRise.textContent = formatMm(rise);
+        updateQuickActive(percent);
+        syncPercentInputs(percent);
         return;
       }
 
-      const ratio = runMm / riseMm;
-      const percent = (riseMm / runMm) * 100;
-      const angle = Math.atan(riseMm / runMm) * 180 / Math.PI;
-      const drop = (1000 / ratio);
-
-      safeText($('dim-ratio'), '1 : ' + ratio.toFixed(1));
-      safeText($('dim-percent'), percent.toFixed(2) + ' %');
-      safeText($('dim-angle'), angle.toFixed(2) + ' °');
-      safeText($('dim-drop'), drop.toFixed(1) + ' mm');
-    }
-
-    function calcRatio() {
-      const x = num($('ratioX').value);
-      const runMm = toMm($('ratioRun').value);
-
-      if (x <= 0 || runMm <= 0) {
-        safeText($('ratio-rise'), '-');
-        safeText($('ratio-percent'), '-');
-        safeText($('ratio-angle'), '-');
-        safeText($('ratio-drop'), '-');
+      const percent = getRisePercent();
+      const run = num(els.riseRun.value);
+      if (percent <= 0){
+        els.resultPercent.textContent = '-- %';
+        els.resultFraction.textContent = '--';
+        els.resultRun.textContent = formatMm(run);
+        els.resultRise.textContent = '-- mm';
         return;
       }
-
-      const riseMm = runMm / x;
-      const percent = (riseMm / runMm) * 100;
-      const angle = Math.atan(riseMm / runMm) * 180 / Math.PI;
-      const drop = 1000 / x;
-
-      safeText($('ratio-rise'), formatByUnit(riseMm));
-      safeText($('ratio-percent'), percent.toFixed(2) + ' %');
-      safeText($('ratio-angle'), angle.toFixed(2) + ' °');
-      safeText($('ratio-drop'), drop.toFixed(1) + ' mm');
+      const rise = run * (percent / 100);
+      els.resultPercent.textContent = formatPercent(percent);
+      els.resultFraction.textContent = approximateFraction(percent);
+      els.resultRun.textContent = formatMm(run);
+      els.resultRise.textContent = formatMm(rise);
+      updateQuickActive(percent);
+      syncPercentInputs(percent);
     }
 
-    function calcPercent() {
-      const p = num($('percentVal').value);
-      const runMm = toMm($('percentRun').value);
+    els.modeSlope.addEventListener('click', () => setMode('slope'));
+    els.modeRun.addEventListener('click', () => setMode('run'));
+    els.modeRise.addEventListener('click', () => setMode('rise'));
 
-      if (p < 0 || runMm <= 0) {
-        safeText($('percent-rise'), '-');
-        safeText($('percent-ratio'), '-');
-        safeText($('percent-angle'), '-');
-        safeText($('percent-drop'), '-');
-        return;
-      }
+    els.runInputModePercent.addEventListener('click', () => {
+      state.runInputMode = 'percent';
+      renderInputModes();
+      recalc();
+    });
+    els.runInputModeFraction.addEventListener('click', () => {
+      state.runInputMode = 'fraction';
+      renderInputModes();
+      recalc();
+    });
+    els.riseInputModePercent.addEventListener('click', () => {
+      state.riseInputMode = 'percent';
+      renderInputModes();
+      recalc();
+    });
+    els.riseInputModeFraction.addEventListener('click', () => {
+      state.riseInputMode = 'fraction';
+      renderInputModes();
+      recalc();
+    });
 
-      const riseMm = runMm * (p / 100);
-      const ratio = p === 0 ? Infinity : 100 / p;
-      const angle = Math.atan(p / 100) * 180 / Math.PI;
-      const drop = p * 10;
+    [
+      els.slopeRun,
+      els.slopeRise,
+      els.runPercent,
+      els.runFraction,
+      els.runRise,
+      els.risePercent,
+      els.riseFraction,
+      els.riseRun
+    ].forEach(el => {
+      el.addEventListener('input', recalc);
+    });
 
-      safeText($('percent-rise'), formatByUnit(riseMm));
-      safeText($('percent-ratio'), Number.isFinite(ratio) ? ('1 : ' + ratio.toFixed(1)) : '水平');
-      safeText($('percent-angle'), angle.toFixed(2) + ' °');
-      safeText($('percent-drop'), drop.toFixed(1) + ' mm');
-    }
-
-    function renderMode() {
-      document.querySelectorAll('.tab').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.mode === state.mode);
-      });
-      $('panel-dimensions').classList.toggle('hidden', state.mode !== 'dimensions');
-      $('panel-ratio').classList.toggle('hidden', state.mode !== 'ratio');
-      $('panel-percent').classList.toggle('hidden', state.mode !== 'percent');
-    }
-
-    function renderUnit() {
-      document.querySelectorAll('.unit-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.unit === state.unit);
-      });
-      recalcAll();
-    }
-
-    function recalcAll() {
-      calcDimensions();
-      calcRatio();
-      calcPercent();
-    }
-
-    document.querySelectorAll('.tab').forEach(btn => {
+    els.quickButtons.forEach(btn => {
       btn.addEventListener('click', () => {
-        state.mode = btn.dataset.mode;
-        renderMode();
+        const percent = Number(btn.dataset.percent);
+        syncPercentInputs(percent);
+        updateQuickActive(percent);
+        recalc();
       });
     });
 
-    document.querySelectorAll('.unit-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        state.unit = btn.dataset.unit;
-        renderUnit();
-      });
-    });
-
-    document.querySelectorAll('[data-ratio]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        $('ratioX').value = btn.dataset.ratio;
-        recalcAll();
-      });
-    });
-
-    document.querySelectorAll('[data-fill-ratio]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        $('ratioX').value = btn.dataset.fillRatio;
-        recalcAll();
-      });
-    });
-
-    ['run', 'rise', 'ratioX', 'ratioRun', 'percentVal', 'percentRun'].forEach(id => {
-      $(id).addEventListener('input', recalcAll);
-    });
-
-    renderMode();
-    renderUnit();
+    renderInputModes();
+    setMode('slope');
   </script>
 </body>
 </html>
