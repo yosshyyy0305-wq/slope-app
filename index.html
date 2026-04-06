@@ -1,1 +1,555 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>勾配計算アプリ</title>
+  <style>
+    :root {
+      --bg: #f1f5f9;
+      --card: #ffffff;
+      --text: #0f172a;
+      --sub: #475569;
+      --line: #cbd5e1;
+      --accent: #0f172a;
+      --accent2: #059669;
+      --soft: #f8fafc;
+      --warn: #fef3c7;
+      --radius: 18px;
+    }
 
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #0f172a, #334155);
+      color: #fff;
+      border-radius: 24px;
+      padding: 18px;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.18);
+    }
+
+    .hero h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+    }
+
+    .hero p {
+      margin: 0;
+      color: #e2e8f0;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid #e2e8f0;
+      border-radius: 22px;
+      padding: 16px;
+      margin-top: 14px;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .spacer {
+      flex: 1 1 auto;
+    }
+
+    button {
+      border: 0;
+      cursor: pointer;
+      font: inherit;
+    }
+
+    .tab, .unit-btn, .preset-btn {
+      border-radius: 14px;
+      padding: 11px 14px;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .tab {
+      background: #e2e8f0;
+      color: #334155;
+    }
+
+    .tab.active {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .unit-btn {
+      background: #ecfdf5;
+      color: #047857;
+    }
+
+    .unit-btn.active {
+      background: var(--accent2);
+      color: #fff;
+    }
+
+    .preset-btn {
+      background: #f1f5f9;
+      color: #334155;
+      padding: 10px 12px;
+    }
+
+    .grid {
+      display: grid;
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    @media (min-width: 760px) {
+      .grid.two {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .field {
+      margin-bottom: 14px;
+    }
+
+    .field:last-child {
+      margin-bottom: 0;
+    }
+
+    .label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #334155;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px 14px;
+      font-size: 17px;
+      background: #fff;
+      outline: none;
+    }
+
+    input[type="number"]:focus {
+      border-color: #94a3b8;
+      box-shadow: 0 0 0 3px rgba(148, 163, 184, 0.22);
+    }
+
+    .row-title {
+      margin: 0 0 10px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #475569;
+    }
+
+    .preset-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .result-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .result {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      background: var(--soft);
+      border-radius: 16px;
+      padding: 14px;
+    }
+
+    .result.main {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .result .name {
+      font-size: 14px;
+    }
+
+    .result .value {
+      font-weight: 800;
+      font-size: 17px;
+      text-align: right;
+    }
+
+    .result.main .value {
+      font-size: 20px;
+    }
+
+    .notes {
+      display: grid;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    @media (min-width: 760px) {
+      .notes {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .note-box {
+      border-radius: 18px;
+      padding: 14px;
+      background: #f8fafc;
+    }
+
+    .note-box.warn {
+      background: var(--warn);
+    }
+
+    .note-box h3 {
+      margin: 0 0 8px;
+      font-size: 15px;
+    }
+
+    .note-box ul {
+      margin: 0;
+      padding-left: 18px;
+      color: #475569;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .helper {
+      margin-top: 8px;
+      font-size: 12px;
+      color: #64748b;
+    }
+
+    .footer-box {
+      margin-top: 14px;
+      font-size: 13px;
+      color: #64748b;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <h1>勾配計算アプリ</h1>
+      <p>1ファイル版。GitHub にそのまま置きやすい形です。高低差・勾配比・％ から相互計算できます。</p>
+    </section>
+
+    <section class="card">
+      <div class="toolbar">
+        <button class="tab active" data-mode="dimensions">高低差から計算</button>
+        <button class="tab" data-mode="ratio">1:x から計算</button>
+        <button class="tab" data-mode="percent">% から計算</button>
+        <div class="spacer"></div>
+        <button class="unit-btn active" data-unit="mm">mm</button>
+        <button class="unit-btn" data-unit="cm">cm</button>
+        <button class="unit-btn" data-unit="m">m</button>
+      </div>
+    </section>
+
+    <section id="panel-dimensions" class="grid two">
+      <div class="card">
+        <div class="field">
+          <label class="label" for="run">水平距離</label>
+          <input id="run" type="number" value="3000" inputmode="decimal" />
+        </div>
+        <div class="field">
+          <label class="label" for="rise">高低差</label>
+          <input id="rise" type="number" value="50" inputmode="decimal" />
+        </div>
+        <div>
+          <div class="row-title">よく使う勾配の目安</div>
+          <div class="preset-wrap">
+            <button class="preset-btn" data-fill-ratio="30">1/30</button>
+            <button class="preset-btn" data-fill-ratio="50">1/50</button>
+            <button class="preset-btn" data-fill-ratio="60">1/60</button>
+            <button class="preset-btn" data-fill-ratio="80">1/80</button>
+            <button class="preset-btn" data-fill-ratio="100">1/100</button>
+          </div>
+          <div class="helper">押すと「1:x」欄にも反映されます。</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="result-list">
+          <div class="result main"><div class="name">勾配比</div><div class="value" id="dim-ratio">-</div></div>
+          <div class="result"><div class="name">勾配（%）</div><div class="value" id="dim-percent">-</div></div>
+          <div class="result"><div class="name">角度</div><div class="value" id="dim-angle">-</div></div>
+          <div class="result"><div class="name">1mあたりの高低差</div><div class="value" id="dim-drop">-</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="panel-ratio" class="grid two hidden">
+      <div class="card">
+        <div class="field">
+          <label class="label" for="ratioX">勾配比（1 : x）の x</label>
+          <input id="ratioX" type="number" value="60" inputmode="decimal" />
+        </div>
+        <div class="field">
+          <label class="label" for="ratioRun">水平距離</label>
+          <input id="ratioRun" type="number" value="3000" inputmode="decimal" />
+        </div>
+        <div>
+          <div class="row-title">よく使う勾配の目安</div>
+          <div class="preset-wrap">
+            <button class="preset-btn" data-ratio="30">1/30</button>
+            <button class="preset-btn" data-ratio="50">1/50</button>
+            <button class="preset-btn" data-ratio="60">1/60</button>
+            <button class="preset-btn" data-ratio="80">1/80</button>
+            <button class="preset-btn" data-ratio="100">1/100</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="result-list">
+          <div class="result main"><div class="name">必要な高低差</div><div class="value" id="ratio-rise">-</div></div>
+          <div class="result"><div class="name">勾配（%）</div><div class="value" id="ratio-percent">-</div></div>
+          <div class="result"><div class="name">角度</div><div class="value" id="ratio-angle">-</div></div>
+          <div class="result"><div class="name">1mあたりの高低差</div><div class="value" id="ratio-drop">-</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="panel-percent" class="grid two hidden">
+      <div class="card">
+        <div class="field">
+          <label class="label" for="percentVal">勾配（%）</label>
+          <input id="percentVal" type="number" value="1.5" step="0.1" inputmode="decimal" />
+        </div>
+        <div class="field">
+          <label class="label" for="percentRun">水平距離</label>
+          <input id="percentRun" type="number" value="3000" inputmode="decimal" />
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="result-list">
+          <div class="result main"><div class="name">必要な高低差</div><div class="value" id="percent-rise">-</div></div>
+          <div class="result"><div class="name">勾配比</div><div class="value" id="percent-ratio">-</div></div>
+          <div class="result"><div class="name">角度</div><div class="value" id="percent-angle">-</div></div>
+          <div class="result"><div class="name">1mあたりの高低差</div><div class="value" id="percent-drop">-</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="notes">
+        <div class="note-box">
+          <h3>次に追加しやすいもの</h3>
+          <ul>
+            <li>水下方向の矢印表示</li>
+            <li>桝・U字溝までの落とし込み計算</li>
+            <li>土間・アプローチ・犬走りの推奨勾配ボタン</li>
+            <li>複数区画の連続計算</li>
+          </ul>
+        </div>
+        <div class="note-box warn">
+          <h3>今の仕様</h3>
+          <ul>
+            <li>単純な一直線勾配の計算</li>
+            <li>単位は mm / cm / m 切替</li>
+            <li>勾配比・%・角度を相互確認</li>
+            <li>GitHub に上げやすい1ファイル版</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-box">index.html として保存すれば、そのまま GitHub にアップできます。</div>
+    </section>
+  </div>
+
+  <script>
+    const state = {
+      mode: 'dimensions',
+      unit: 'mm'
+    };
+
+    const $ = (id) => document.getElementById(id);
+    const num = (v) => {
+      const n = parseFloat(v);
+      return Number.isFinite(n) ? n : 0;
+    };
+
+    function toMm(value) {
+      const n = num(value);
+      if (state.unit === 'mm') return n;
+      if (state.unit === 'cm') return n * 10;
+      return n * 1000;
+    }
+
+    function formatByUnit(mm) {
+      if (!Number.isFinite(mm)) return '-';
+      if (state.unit === 'mm') return mm.toFixed(1) + ' mm';
+      if (state.unit === 'cm') return (mm / 10).toFixed(2) + ' cm';
+      return (mm / 1000).toFixed(3) + ' m';
+    }
+
+    function safeText(el, text) {
+      el.textContent = text;
+    }
+
+    function calcDimensions() {
+      const runMm = toMm($('run').value);
+      const riseMm = toMm($('rise').value);
+
+      if (runMm <= 0) {
+        safeText($('dim-ratio'), '-');
+        safeText($('dim-percent'), '-');
+        safeText($('dim-angle'), '-');
+        safeText($('dim-drop'), '-');
+        return;
+      }
+
+      if (riseMm === 0) {
+        safeText($('dim-ratio'), '水平');
+        safeText($('dim-percent'), '0.00 %');
+        safeText($('dim-angle'), '0.00 °');
+        safeText($('dim-drop'), '0.0 mm');
+        return;
+      }
+
+      const ratio = runMm / riseMm;
+      const percent = (riseMm / runMm) * 100;
+      const angle = Math.atan(riseMm / runMm) * 180 / Math.PI;
+      const drop = (1000 / ratio);
+
+      safeText($('dim-ratio'), '1 : ' + ratio.toFixed(1));
+      safeText($('dim-percent'), percent.toFixed(2) + ' %');
+      safeText($('dim-angle'), angle.toFixed(2) + ' °');
+      safeText($('dim-drop'), drop.toFixed(1) + ' mm');
+    }
+
+    function calcRatio() {
+      const x = num($('ratioX').value);
+      const runMm = toMm($('ratioRun').value);
+
+      if (x <= 0 || runMm <= 0) {
+        safeText($('ratio-rise'), '-');
+        safeText($('ratio-percent'), '-');
+        safeText($('ratio-angle'), '-');
+        safeText($('ratio-drop'), '-');
+        return;
+      }
+
+      const riseMm = runMm / x;
+      const percent = (riseMm / runMm) * 100;
+      const angle = Math.atan(riseMm / runMm) * 180 / Math.PI;
+      const drop = 1000 / x;
+
+      safeText($('ratio-rise'), formatByUnit(riseMm));
+      safeText($('ratio-percent'), percent.toFixed(2) + ' %');
+      safeText($('ratio-angle'), angle.toFixed(2) + ' °');
+      safeText($('ratio-drop'), drop.toFixed(1) + ' mm');
+    }
+
+    function calcPercent() {
+      const p = num($('percentVal').value);
+      const runMm = toMm($('percentRun').value);
+
+      if (p < 0 || runMm <= 0) {
+        safeText($('percent-rise'), '-');
+        safeText($('percent-ratio'), '-');
+        safeText($('percent-angle'), '-');
+        safeText($('percent-drop'), '-');
+        return;
+      }
+
+      const riseMm = runMm * (p / 100);
+      const ratio = p === 0 ? Infinity : 100 / p;
+      const angle = Math.atan(p / 100) * 180 / Math.PI;
+      const drop = p * 10;
+
+      safeText($('percent-rise'), formatByUnit(riseMm));
+      safeText($('percent-ratio'), Number.isFinite(ratio) ? ('1 : ' + ratio.toFixed(1)) : '水平');
+      safeText($('percent-angle'), angle.toFixed(2) + ' °');
+      safeText($('percent-drop'), drop.toFixed(1) + ' mm');
+    }
+
+    function renderMode() {
+      document.querySelectorAll('.tab').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.mode === state.mode);
+      });
+      $('panel-dimensions').classList.toggle('hidden', state.mode !== 'dimensions');
+      $('panel-ratio').classList.toggle('hidden', state.mode !== 'ratio');
+      $('panel-percent').classList.toggle('hidden', state.mode !== 'percent');
+    }
+
+    function renderUnit() {
+      document.querySelectorAll('.unit-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.unit === state.unit);
+      });
+      recalcAll();
+    }
+
+    function recalcAll() {
+      calcDimensions();
+      calcRatio();
+      calcPercent();
+    }
+
+    document.querySelectorAll('.tab').forEach(btn => {
+      btn.addEventListener('click', () => {
+        state.mode = btn.dataset.mode;
+        renderMode();
+      });
+    });
+
+    document.querySelectorAll('.unit-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        state.unit = btn.dataset.unit;
+        renderUnit();
+      });
+    });
+
+    document.querySelectorAll('[data-ratio]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        $('ratioX').value = btn.dataset.ratio;
+        recalcAll();
+      });
+    });
+
+    document.querySelectorAll('[data-fill-ratio]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        $('ratioX').value = btn.dataset.fillRatio;
+        recalcAll();
+      });
+    });
+
+    ['run', 'rise', 'ratioX', 'ratioRun', 'percentVal', 'percentRun'].forEach(id => {
+      $(id).addEventListener('input', recalcAll);
+    });
+
+    renderMode();
+    renderUnit();
+  </script>
+</body>
+</html>
