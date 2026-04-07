@@ -66,6 +66,8 @@
     .tab-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
     .tab-row .btn{width:100%;white-space:nowrap;letter-spacing:-0.02em}
 
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
     .unit-input{position:relative}
     .unit-input input{padding-right:74px}
     .unit{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:13px;font-weight:800;color:var(--muted);pointer-events:none}
@@ -84,34 +86,22 @@
     .summary-box .v{font-size:24px;font-weight:900;line-height:1.2;word-break:break-word}
     .summary-box .s{font-size:13px;font-weight:800;color:var(--muted);margin-top:4px;min-height:18px}
 
-    .diagram-card{border:1px solid var(--line);border-radius:14px;background:#f8fbff;padding:12px}
-    .diagram-title{font-size:12px;font-weight:800;color:var(--muted);margin-bottom:10px}
-    .triangle-ui{position:relative;min-height:390px}
-    .triangle-svg{display:block;width:100%;height:390px}
-    .diagram-input{position:absolute;width:170px;max-width:44%}
-    .diagram-input label{margin-bottom:4px;font-size:12px}
-    .diagram-input input{min-height:44px;padding:10px 12px;font-size:15px}
-    .diagram-input .unit{right:12px;font-size:12px}
-    .diagram-run{left:50%;bottom:4px;transform:translateX(-50%)}
-    .diagram-rise{right:0;top:52%;transform:translateY(-50%)}
-    .diagram-slope-center{left:50%;top:32%;transform:translate(-50%,-50%)}
-    .diagram-note{position:absolute;left:10px;top:8px;font-size:12px;font-weight:800;color:var(--muted);background:rgba(255,255,255,.9);padding:4px 8px;border-radius:999px;border:1px solid var(--line)}
-    .diagram-note-right{left:auto;right:10px}
+    .diagram-card{border:1px solid var(--line);border-radius:14px;background:#f8fbff;padding:10px;margin-bottom:12px}
+    .diagram-title{font-size:12px;font-weight:800;color:var(--muted);margin-bottom:8px}
+    .mini-diagram{position:relative}
+    .mini-diagram svg{display:block;width:100%;height:180px}
+    .diagram-note{position:absolute;left:8px;top:8px;font-size:11px;font-weight:800;color:var(--muted);background:rgba(255,255,255,.9);padding:3px 7px;border-radius:999px;border:1px solid var(--line)}
+
     .hidden{display:none!important}
 
     @media (max-width:700px){
       .tab-row{gap:6px}
       .tab-row .btn{font-size:13px;padding:10px 6px}
+      .grid-2{grid-template-columns:1fr}
       .quick-grid-top{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
       .quick-grid-bottom{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin-top:6px}
       .quick-grid-top .btn,.quick-grid-bottom .btn{font-size:12px;padding:9px 6px}
-      .triangle-ui{min-height:360px}
-      .triangle-svg{height:360px}
-      .diagram-input{width:136px;max-width:46%}
-      .diagram-input input{font-size:14px;min-height:42px}
-      .diagram-run{left:50%;bottom:0;transform:translateX(-50%)}
-      .diagram-rise{right:0;top:54%;transform:translateY(-50%)}
-      .diagram-slope-center{left:50%;top:31%;transform:translate(-50%,-50%)}
+      .mini-diagram svg{height:160px}
     }
   </style>
 </head>
@@ -134,33 +124,33 @@
 
     <div id="panel-slope" class="panel">
       <div class="diagram-card">
-        <div class="diagram-title">図で入力</div>
-        <div class="triangle-ui">
+        <div class="diagram-title">図</div>
+        <div class="mini-diagram">
           <div class="diagram-note">直角三角形イメージ</div>
-          <svg class="triangle-svg" viewBox="0 0 360 390" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-            <line x1="50" y1="300" x2="290" y2="300" stroke="#1f6fd6" stroke-width="6" stroke-linecap="round" />
-            <line x1="290" y1="300" x2="290" y2="90" stroke="#1f6fd6" stroke-width="6" stroke-linecap="round" />
-            <line x1="50" y1="300" x2="290" y2="90" stroke="#8fb8ef" stroke-width="5" stroke-linecap="round" />
-            <rect x="258" y="268" width="32" height="32" fill="none" stroke="#8fb8ef" stroke-width="4" rx="3" />
-            <text x="170" y="334" text-anchor="middle" font-size="16" font-weight="700" fill="#5b728d">⇄ 水平距離</text>
-            <text x="318" y="196" text-anchor="middle" font-size="16" font-weight="700" fill="#5b728d">⇅ 高低差</text>
-            <text x="162" y="132" text-anchor="middle" font-size="16" font-weight="700" fill="#5b728d">∠ 勾配</text>
+          <svg viewBox="0 0 360 180" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+            <line x1="55" y1="130" x2="275" y2="130" stroke="#1f6fd6" stroke-width="6" stroke-linecap="round" />
+            <line x1="275" y1="130" x2="275" y2="38" stroke="#1f6fd6" stroke-width="6" stroke-linecap="round" />
+            <line x1="55" y1="130" x2="275" y2="38" stroke="#8fb8ef" stroke-width="5" stroke-linecap="round" />
+            <rect x="249" y="104" width="26" height="26" fill="none" stroke="#8fb8ef" stroke-width="4" rx="3" />
+            <text x="165" y="156" text-anchor="middle" font-size="15" font-weight="700" fill="#5b728d">⇄ 水平距離</text>
+            <text x="308" y="86" text-anchor="middle" font-size="15" font-weight="700" fill="#5b728d">⇅ 高低差</text>
+            <text x="156" y="54" text-anchor="middle" font-size="15" font-weight="700" fill="#5b728d">∠ 勾配</text>
           </svg>
-
-          <div class="diagram-input diagram-run">
-            <label for="slopeRun"><span class="icon-label">⇄ <span>水平距離</span></span></label>
-            <div class="unit-input">
-              <input id="slopeRun" type="number" value="" inputmode="decimal" />
-              <span class="unit">mm</span>
-            </div>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="field">
+          <label for="slopeRun"><span class="icon-label">⇄ <span>水平距離</span></span></label>
+          <div class="unit-input">
+            <input id="slopeRun" type="number" value="" inputmode="decimal" />
+            <span class="unit">mm</span>
           </div>
-
-          <div class="diagram-input diagram-rise">
-            <label for="slopeRise"><span class="icon-label">⇅ <span>高低差</span></span></label>
-            <div class="unit-input">
-              <input id="slopeRise" type="number" value="" inputmode="decimal" />
-              <span class="unit">mm</span>
-            </div>
+        </div>
+        <div class="field">
+          <label for="slopeRise"><span class="icon-label">⇅ <span>高低差</span></span></label>
+          <div class="unit-input">
+            <input id="slopeRise" type="number" value="" inputmode="decimal" />
+            <span class="unit">mm</span>
           </div>
         </div>
       </div>
@@ -168,110 +158,108 @@
 
     <div id="panel-run" class="panel hidden">
       <div class="diagram-card">
-        <div class="diagram-title">図で入力</div>
-        <div class="triangle-ui">
+        <div class="diagram-title">図</div>
+        <div class="mini-diagram">
           <div class="diagram-note">水平距離を計算</div>
-          <svg class="triangle-svg" viewBox="0 0 360 390" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-            <line x1="50" y1="300" x2="290" y2="300" stroke="#1f6fd6" stroke-width="6" stroke-linecap="round" stroke-dasharray="12 10" />
-            <line x1="290" y1="300" x2="290" y2="90" stroke="#1f6fd6" stroke-width="6" stroke-linecap="round" />
-            <line x1="50" y1="300" x2="290" y2="90" stroke="#8fb8ef" stroke-width="5" stroke-linecap="round" />
-            <rect x="258" y="268" width="32" height="32" fill="none" stroke="#8fb8ef" stroke-width="4" rx="3" />
-            <text x="170" y="334" text-anchor="middle" font-size="16" font-weight="700" fill="#1f6fd6">⇄ 求める</text>
-            <text x="318" y="196" text-anchor="middle" font-size="16" font-weight="700" fill="#5b728d">⇅ 高低差</text>
-            <text x="162" y="132" text-anchor="middle" font-size="16" font-weight="700" fill="#5b728d">∠ 勾配</text>
+          <svg viewBox="0 0 360 180" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+            <line x1="55" y1="130" x2="275" y2="130" stroke="#1f6fd6" stroke-width="6" stroke-linecap="round" stroke-dasharray="12 10" />
+            <line x1="275" y1="130" x2="275" y2="38" stroke="#1f6fd6" stroke-width="6" stroke-linecap="round" />
+            <line x1="55" y1="130" x2="275" y2="38" stroke="#8fb8ef" stroke-width="5" stroke-linecap="round" />
+            <rect x="249" y="104" width="26" height="26" fill="none" stroke="#8fb8ef" stroke-width="4" rx="3" />
+            <text x="165" y="156" text-anchor="middle" font-size="15" font-weight="700" fill="#1f6fd6">⇄ 求める</text>
+            <text x="308" y="86" text-anchor="middle" font-size="15" font-weight="700" fill="#5b728d">⇅ 高低差</text>
+            <text x="156" y="54" text-anchor="middle" font-size="15" font-weight="700" fill="#5b728d">∠ 勾配</text>
           </svg>
-
-          <div class="diagram-input diagram-slope-center">
-            <label><span class="icon-label">∠ <span>勾配</span></span></label>
-            <div class="input-mode-row">
-              <button id="runInputModePercent" class="btn active" type="button">%</button>
-              <button id="runInputModeFraction" class="btn" type="button">1/x</button>
-            </div>
-            <div id="runPercentWrap" class="unit-input">
-              <input id="runPercent" type="number" value="" step="any" inputmode="decimal" />
-              <span class="unit">%</span>
-            </div>
-            <div id="runFractionWrap" class="unit-input hidden">
-              <input id="runFraction" type="number" value="" step="any" inputmode="decimal" />
-              <span class="unit">1/x</span>
-            </div>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="field">
+          <label><span class="icon-label">∠ <span>勾配</span></span></label>
+          <div class="input-mode-row">
+            <button id="runInputModePercent" class="btn active" type="button">%</button>
+            <button id="runInputModeFraction" class="btn" type="button">1/x</button>
           </div>
-
-          <div class="diagram-input diagram-rise">
-            <label for="runRise"><span class="icon-label">⇅ <span>高低差</span></span></label>
-            <div class="unit-input">
-              <input id="runRise" type="number" value="" inputmode="decimal" />
-              <span class="unit">mm</span>
-            </div>
+          <div id="runPercentWrap" class="unit-input">
+            <input id="runPercent" type="number" value="" step="any" inputmode="decimal" />
+            <span class="unit">%</span>
+          </div>
+          <div id="runFractionWrap" class="unit-input hidden">
+            <input id="runFraction" type="number" value="" step="any" inputmode="decimal" />
+            <span class="unit">1/x</span>
           </div>
         </div>
-
-        <div class="quick-inline">
-          <div class="quick-grid-top">
-            <button class="btn quick-btn" data-percent="1" type="button">1%</button>
-            <button class="btn quick-btn" data-percent="1.5" type="button">1.5%</button>
-            <button class="btn quick-btn" data-percent="2" type="button">2%</button>
-            <button class="btn quick-btn" data-percent="3" type="button">3%</button>
+        <div class="field">
+          <label for="runRise"><span class="icon-label">⇅ <span>高低差</span></span></label>
+          <div class="unit-input">
+            <input id="runRise" type="number" value="" inputmode="decimal" />
+            <span class="unit">mm</span>
           </div>
-          <div class="quick-grid-bottom">
-            <button class="btn quick-btn" data-percent="12.5" type="button">1/8（建基法）</button>
-            <button class="btn quick-btn" data-percent="8.3333333333" type="button">1/12（バリア法）</button>
-          </div>
+        </div>
+      </div>
+      <div class="quick-inline">
+        <div class="quick-grid-top">
+          <button class="btn quick-btn" data-percent="1" type="button">1%</button>
+          <button class="btn quick-btn" data-percent="1.5" type="button">1.5%</button>
+          <button class="btn quick-btn" data-percent="2" type="button">2%</button>
+          <button class="btn quick-btn" data-percent="3" type="button">3%</button>
+        </div>
+        <div class="quick-grid-bottom">
+          <button class="btn quick-btn" data-percent="12.5" type="button">1/8（建基法）</button>
+          <button class="btn quick-btn" data-percent="8.3333333333" type="button">1/12（バリア法）</button>
         </div>
       </div>
     </div>
 
     <div id="panel-rise" class="panel hidden">
       <div class="diagram-card">
-        <div class="diagram-title">図で入力</div>
-        <div class="triangle-ui">
+        <div class="diagram-title">図</div>
+        <div class="mini-diagram">
           <div class="diagram-note">高低差を計算</div>
-          <svg class="triangle-svg" viewBox="0 0 360 390" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-            <line x1="50" y1="300" x2="290" y2="300" stroke="#1f6fd6" stroke-width="6" stroke-linecap="round" />
-            <line x1="290" y1="300" x2="290" y2="90" stroke="#1f6fd6" stroke-width="6" stroke-linecap="round" stroke-dasharray="12 10" />
-            <line x1="50" y1="300" x2="290" y2="90" stroke="#8fb8ef" stroke-width="5" stroke-linecap="round" />
-            <rect x="258" y="268" width="32" height="32" fill="none" stroke="#8fb8ef" stroke-width="4" rx="3" />
-            <text x="170" y="334" text-anchor="middle" font-size="16" font-weight="700" fill="#5b728d">⇄ 水平距離</text>
-            <text x="318" y="196" text-anchor="middle" font-size="16" font-weight="700" fill="#1f6fd6">⇅ 求める</text>
-            <text x="162" y="132" text-anchor="middle" font-size="16" font-weight="700" fill="#5b728d">∠ 勾配</text>
+          <svg viewBox="0 0 360 180" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+            <line x1="55" y1="130" x2="275" y2="130" stroke="#1f6fd6" stroke-width="6" stroke-linecap="round" />
+            <line x1="275" y1="130" x2="275" y2="38" stroke="#1f6fd6" stroke-width="6" stroke-linecap="round" stroke-dasharray="12 10" />
+            <line x1="55" y1="130" x2="275" y2="38" stroke="#8fb8ef" stroke-width="5" stroke-linecap="round" />
+            <rect x="249" y="104" width="26" height="26" fill="none" stroke="#8fb8ef" stroke-width="4" rx="3" />
+            <text x="165" y="156" text-anchor="middle" font-size="15" font-weight="700" fill="#5b728d">⇄ 水平距離</text>
+            <text x="308" y="86" text-anchor="middle" font-size="15" font-weight="700" fill="#1f6fd6">⇅ 求める</text>
+            <text x="156" y="54" text-anchor="middle" font-size="15" font-weight="700" fill="#5b728d">∠ 勾配</text>
           </svg>
-
-          <div class="diagram-input diagram-slope-center">
-            <label><span class="icon-label">∠ <span>勾配</span></span></label>
-            <div class="input-mode-row">
-              <button id="riseInputModePercent" class="btn active" type="button">%</button>
-              <button id="riseInputModeFraction" class="btn" type="button">1/x</button>
-            </div>
-            <div id="risePercentWrap" class="unit-input">
-              <input id="risePercent" type="number" value="" step="any" inputmode="decimal" />
-              <span class="unit">%</span>
-            </div>
-            <div id="riseFractionWrap" class="unit-input hidden">
-              <input id="riseFraction" type="number" value="" step="any" inputmode="decimal" />
-              <span class="unit">1/x</span>
-            </div>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="field">
+          <label><span class="icon-label">∠ <span>勾配</span></span></label>
+          <div class="input-mode-row">
+            <button id="riseInputModePercent" class="btn active" type="button">%</button>
+            <button id="riseInputModeFraction" class="btn" type="button">1/x</button>
           </div>
-
-          <div class="diagram-input diagram-run">
-            <label for="riseRun"><span class="icon-label">⇄ <span>水平距離</span></span></label>
-            <div class="unit-input">
-              <input id="riseRun" type="number" value="" inputmode="decimal" />
-              <span class="unit">mm</span>
-            </div>
+          <div id="risePercentWrap" class="unit-input">
+            <input id="risePercent" type="number" value="" step="any" inputmode="decimal" />
+            <span class="unit">%</span>
+          </div>
+          <div id="riseFractionWrap" class="unit-input hidden">
+            <input id="riseFraction" type="number" value="" step="any" inputmode="decimal" />
+            <span class="unit">1/x</span>
           </div>
         </div>
-
-        <div class="quick-inline">
-          <div class="quick-grid-top">
-            <button class="btn quick-btn" data-percent="1" type="button">1%</button>
-            <button class="btn quick-btn" data-percent="1.5" type="button">1.5%</button>
-            <button class="btn quick-btn" data-percent="2" type="button">2%</button>
-            <button class="btn quick-btn" data-percent="3" type="button">3%</button>
+        <div class="field">
+          <label for="riseRun"><span class="icon-label">⇄ <span>水平距離</span></span></label>
+          <div class="unit-input">
+            <input id="riseRun" type="number" value="" inputmode="decimal" />
+            <span class="unit">mm</span>
           </div>
-          <div class="quick-grid-bottom">
-            <button class="btn quick-btn" data-percent="12.5" type="button">1/8（建基法）</button>
-            <button class="btn quick-btn" data-percent="8.3333333333" type="button">1/12（バリア法）</button>
-          </div>
+        </div>
+      </div>
+      <div class="quick-inline">
+        <div class="quick-grid-top">
+          <button class="btn quick-btn" data-percent="1" type="button">1%</button>
+          <button class="btn quick-btn" data-percent="1.5" type="button">1.5%</button>
+          <button class="btn quick-btn" data-percent="2" type="button">2%</button>
+          <button class="btn quick-btn" data-percent="3" type="button">3%</button>
+        </div>
+        <div class="quick-grid-bottom">
+          <button class="btn quick-btn" data-percent="12.5" type="button">1/8（建基法）</button>
+          <button class="btn quick-btn" data-percent="8.3333333333" type="button">1/12（バリア法）</button>
         </div>
       </div>
     </div>
