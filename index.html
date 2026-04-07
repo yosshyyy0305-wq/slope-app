@@ -24,51 +24,31 @@
     *{box-sizing:border-box}
     html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif}
     body{padding-bottom:24px}
-
     .app{max-width:960px;margin:0 auto;padding:14px}
     .panel{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:14px;margin-bottom:12px}
-
     h1{margin:0;font-size:22px}
 
     .field{margin-bottom:12px}
     .field:last-child{margin-bottom:0}
     label{display:block;font-size:13px;font-weight:800;margin-bottom:6px}
-
     .icon-label{display:inline-flex;align-items:center;gap:6px}
     .icon-tab{margin-right:6px}
     .icon-box{margin-right:6px}
 
     input[type="number"]{
-      width:100%;
-      min-height:48px;
-      border:1px solid var(--line);
-      border-radius:12px;
-      padding:12px 14px;
-      font-size:16px;
-      color:var(--text);
-      background:#fff;
-      outline:none;
-      appearance:none;
+      width:100%;min-height:48px;border:1px solid var(--line);border-radius:12px;
+      padding:12px 14px;font-size:16px;color:var(--text);background:#fff;outline:none;appearance:none;
     }
     input:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(31,111,214,.12)}
 
     .btn{
-      min-height:42px;
-      border-radius:12px;
-      border:1px solid var(--line);
-      background:#fff;
-      color:var(--text);
-      padding:10px 12px;
-      font-size:15px;
-      font-weight:800;
-      cursor:pointer;
-      line-height:1.2;
+      min-height:42px;border-radius:12px;border:1px solid var(--line);background:#fff;color:var(--text);
+      padding:10px 12px;font-size:15px;font-weight:800;cursor:pointer;line-height:1.2;
     }
     .btn.active{background:var(--blue-soft);border-color:#9dc3f8;color:var(--blue-dark)}
 
     .tab-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
     .tab-row .btn{width:100%;white-space:nowrap;letter-spacing:-0.02em}
-
     .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 
     .unit-input{position:relative}
@@ -91,6 +71,16 @@
 
     .mini-diagram{position:relative;margin-bottom:10px}
     .mini-diagram svg{display:block;width:100%;height:134px}
+
+    .calc-toggle{margin-top:8px}
+    .mini-calc{margin-top:8px;border:1px solid var(--line);border-radius:12px;background:#f8fbff;padding:10px}
+    .mini-calc-display{border:1px solid var(--line);border-radius:10px;background:#fff;padding:10px 12px;margin-bottom:8px}
+    .mini-calc-label{font-size:11px;font-weight:800;color:var(--muted);margin-bottom:4px}
+    .mini-calc-expression{font-size:14px;font-weight:700;color:var(--text);min-height:20px;word-break:break-all}
+    .mini-calc-result{font-size:18px;font-weight:900;color:var(--blue-dark);margin-top:4px}
+    .mini-calc-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+    .mini-calc-grid .btn{min-height:40px;padding:8px 6px}
+    .mini-calc-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
 
     .hidden{display:none!important}
 
@@ -200,6 +190,39 @@
             <input id="runRise" type="number" value="" inputmode="decimal" />
             <span class="unit">mm</span>
           </div>
+          <div class="calc-toggle">
+            <button id="toggleRunCalc" class="btn" type="button" style="width:100%;">電卓を開く</button>
+          </div>
+          <div id="runCalcBox" class="mini-calc hidden">
+            <div class="mini-calc-display">
+              <div class="mini-calc-label">式</div>
+              <div id="runCalcExpression" class="mini-calc-expression"></div>
+              <div class="mini-calc-label" style="margin-top:6px;">結果</div>
+              <div id="runCalcResult" class="mini-calc-result">0</div>
+            </div>
+            <div class="mini-calc-grid">
+              <button class="btn calc-btn" data-value="7" type="button">7</button>
+              <button class="btn calc-btn" data-value="8" type="button">8</button>
+              <button class="btn calc-btn" data-value="9" type="button">9</button>
+              <button class="btn calc-btn" data-value="+" type="button">＋</button>
+              <button class="btn calc-btn" data-value="4" type="button">4</button>
+              <button class="btn calc-btn" data-value="5" type="button">5</button>
+              <button class="btn calc-btn" data-value="6" type="button">6</button>
+              <button class="btn calc-btn" data-value="-" type="button">－</button>
+              <button class="btn calc-btn" data-value="1" type="button">1</button>
+              <button class="btn calc-btn" data-value="2" type="button">2</button>
+              <button class="btn calc-btn" data-value="3" type="button">3</button>
+              <button class="btn calc-btn" data-value="." type="button">.</button>
+              <button class="btn calc-btn" data-value="0" type="button">0</button>
+              <button id="runCalcBack" class="btn" type="button">⌫</button>
+              <button id="runCalcClear" class="btn" type="button">AC</button>
+              <button id="runCalcEq" class="btn" type="button">＝</button>
+            </div>
+            <div class="mini-calc-actions">
+              <button id="applyRunCalc" class="btn" type="button">高低差に入れる</button>
+              <button id="closeRunCalc" class="btn" type="button">閉じる</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -288,6 +311,10 @@
       riseInputMode: 'percent'
     };
 
+    const calcState = {
+      run: { expression: '', result: 0 }
+    };
+
     const els = {
       modeSlope: document.getElementById('modeSlope'),
       modeRun: document.getElementById('modeRun'),
@@ -319,7 +346,17 @@
       resultRun: document.getElementById('resultRun'),
       resultRise: document.getElementById('resultRise'),
       quickButtons: Array.from(document.querySelectorAll('.quick-btn')),
-      resetBtn: document.getElementById('resetBtn')
+      resetBtn: document.getElementById('resetBtn'),
+      toggleRunCalc: document.getElementById('toggleRunCalc'),
+      runCalcBox: document.getElementById('runCalcBox'),
+      runCalcExpression: document.getElementById('runCalcExpression'),
+      runCalcResult: document.getElementById('runCalcResult'),
+      applyRunCalc: document.getElementById('applyRunCalc'),
+      closeRunCalc: document.getElementById('closeRunCalc'),
+      calcButtons: Array.from(document.querySelectorAll('.calc-btn')),
+      runCalcBack: document.getElementById('runCalcBack'),
+      runCalcClear: document.getElementById('runCalcClear'),
+      runCalcEq: document.getElementById('runCalcEq')
     };
 
     function num(v){
@@ -335,28 +372,32 @@
       return v.toFixed(2).replace(/0+$/, '').replace(/\.$/, '');
     }
 
-    function formatMm(v){
-      return Number.isFinite(v) ? `${roundSmart(v)} mm` : '-- mm';
-    }
-
-    function formatPercent(v){
-      return Number.isFinite(v) ? `${roundSmart(v)} %` : '-- %';
-    }
-
-    function percentToFraction(percent){
-      if (!Number.isFinite(percent) || percent <= 0) return 0;
-      return 100 / percent;
-    }
-
-    function fractionToPercent(denom){
-      if (!Number.isFinite(denom) || denom <= 0) return 0;
-      return 100 / denom;
-    }
+    function formatMm(v){ return Number.isFinite(v) ? `${roundSmart(v)} mm` : '-- mm'; }
+    function formatPercent(v){ return Number.isFinite(v) ? `${roundSmart(v)} %` : '-- %'; }
+    function percentToFraction(percent){ return (!Number.isFinite(percent) || percent <= 0) ? 0 : 100 / percent; }
+    function fractionToPercent(denom){ return (!Number.isFinite(denom) || denom <= 0) ? 0 : 100 / denom; }
 
     function approximateFraction(percent){
       if (!Number.isFinite(percent) || percent <= 0) return '--';
       const exactDenom = 100 / percent;
       return `1/${exactDenom.toFixed(1).replace(/\.0$/, '')}`;
+    }
+
+    function evaluateSimpleExpression(expr){
+      if (!expr) return 0;
+      const sanitized = expr.replace(/[^0-9+\-.]/g, '');
+      if (!sanitized) return 0;
+      const tokens = sanitized.match(/[+-]?\d*\.?\d+/g);
+      if (!tokens) return NaN;
+      return tokens.reduce((sum, token) => sum + Number(token), 0);
+    }
+
+    function renderCalculator(){
+      const expr = calcState.run.expression;
+      els.runCalcExpression.textContent = expr || ' ';
+      const result = evaluateSimpleExpression(expr);
+      calcState.run.result = Number.isFinite(result) ? result : 0;
+      els.runCalcResult.textContent = Number.isFinite(result) ? roundSmart(result) : 'Err';
     }
 
     function syncPercentInputs(percent){
@@ -374,17 +415,8 @@
       });
     }
 
-    function getRunPercent(){
-      return state.runInputMode === 'percent'
-        ? num(els.runPercent.value)
-        : fractionToPercent(num(els.runFraction.value));
-    }
-
-    function getRisePercent(){
-      return state.riseInputMode === 'percent'
-        ? num(els.risePercent.value)
-        : fractionToPercent(num(els.riseFraction.value));
-    }
+    function getRunPercent(){ return state.runInputMode === 'percent' ? num(els.runPercent.value) : fractionToPercent(num(els.runFraction.value)); }
+    function getRisePercent(){ return state.riseInputMode === 'percent' ? num(els.risePercent.value) : fractionToPercent(num(els.riseFraction.value)); }
 
     function renderInputModes(){
       els.runInputModePercent.classList.toggle('active', state.runInputMode === 'percent');
@@ -458,37 +490,12 @@
     els.modeRun.addEventListener('click', () => setMode('run'));
     els.modeRise.addEventListener('click', () => setMode('rise'));
 
-    els.runInputModePercent.addEventListener('click', () => {
-      state.runInputMode = 'percent';
-      renderInputModes();
-      recalc();
-    });
-    els.runInputModeFraction.addEventListener('click', () => {
-      state.runInputMode = 'fraction';
-      renderInputModes();
-      recalc();
-    });
-    els.riseInputModePercent.addEventListener('click', () => {
-      state.riseInputMode = 'percent';
-      renderInputModes();
-      recalc();
-    });
-    els.riseInputModeFraction.addEventListener('click', () => {
-      state.riseInputMode = 'fraction';
-      renderInputModes();
-      recalc();
-    });
+    els.runInputModePercent.addEventListener('click', () => { state.runInputMode = 'percent'; renderInputModes(); recalc(); });
+    els.runInputModeFraction.addEventListener('click', () => { state.runInputMode = 'fraction'; renderInputModes(); recalc(); });
+    els.riseInputModePercent.addEventListener('click', () => { state.riseInputMode = 'percent'; renderInputModes(); recalc(); });
+    els.riseInputModeFraction.addEventListener('click', () => { state.riseInputMode = 'fraction'; renderInputModes(); recalc(); });
 
-    [
-      els.slopeRun,
-      els.slopeRise,
-      els.runPercent,
-      els.runFraction,
-      els.runRise,
-      els.risePercent,
-      els.riseFraction,
-      els.riseRun
-    ].forEach(el => {
+    [els.slopeRun, els.slopeRise, els.runPercent, els.runFraction, els.runRise, els.risePercent, els.riseFraction, els.riseRun].forEach(el => {
       el.addEventListener('input', recalc);
     });
 
@@ -499,6 +506,45 @@
         updateQuickActive(percent);
         recalc();
       });
+    });
+
+    els.toggleRunCalc.addEventListener('click', () => {
+      const willOpen = els.runCalcBox.classList.contains('hidden');
+      els.runCalcBox.classList.toggle('hidden', !willOpen);
+      els.toggleRunCalc.textContent = willOpen ? '電卓を閉じる' : '電卓を開く';
+      renderCalculator();
+    });
+
+    els.closeRunCalc.addEventListener('click', () => {
+      els.runCalcBox.classList.add('hidden');
+      els.toggleRunCalc.textContent = '電卓を開く';
+    });
+
+    els.calcButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        calcState.run.expression += btn.dataset.value;
+        renderCalculator();
+      });
+    });
+
+    els.runCalcBack.addEventListener('click', () => {
+      calcState.run.expression = calcState.run.expression.slice(0, -1);
+      renderCalculator();
+    });
+
+    els.runCalcClear.addEventListener('click', () => {
+      calcState.run.expression = '';
+      renderCalculator();
+    });
+
+    els.runCalcEq.addEventListener('click', renderCalculator);
+
+    els.applyRunCalc.addEventListener('click', () => {
+      const result = evaluateSimpleExpression(calcState.run.expression);
+      if (Number.isFinite(result)) {
+        els.runRise.value = roundSmart(result);
+        recalc();
+      }
     });
 
     els.resetBtn.addEventListener('click', () => {
@@ -517,10 +563,15 @@
       els.quickButtons.forEach(btn => btn.classList.remove('active'));
       state.runInputMode = 'percent';
       state.riseInputMode = 'percent';
+      calcState.run.expression = '';
+      renderCalculator();
+      els.runCalcBox.classList.add('hidden');
+      els.toggleRunCalc.textContent = '電卓を開く';
       renderInputModes();
       recalc();
     });
 
+    renderCalculator();
     renderInputModes();
     setMode('slope');
   </script>
