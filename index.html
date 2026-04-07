@@ -138,6 +138,72 @@
             <input id="slopeRise" type="number" value="" inputmode="decimal" />
             <span class="unit">mm</span>
           </div>
+          <div class="calc-toggle">
+            <button id="toggleSlopeCalc" class="btn" type="button" style="width:100%;">電卓を開く</button>
+          </div>
+          <div id="slopeCalcBox" class="mini-calc hidden">
+            <div class="mini-calc-display">
+              <div class="mini-calc-label">式</div>
+              <div id="slopeCalcExpression" class="mini-calc-expression"></div>
+              <div class="mini-calc-label" style="margin-top:6px;">結果</div>
+              <div id="slopeCalcResult" class="mini-calc-result">0</div>
+            </div>
+            <div class="mini-calc-grid">
+              <button class="btn calc-btn" data-target="slope" data-value="7" type="button">7</button>
+              <button class="btn calc-btn" data-target="slope" data-value="8" type="button">8</button>
+              <button class="btn calc-btn" data-target="slope" data-value="9" type="button">9</button>
+              <button class="btn calc-btn" data-target="slope" data-value="+" type="button">＋</button>
+              <button class="btn calc-btn" data-target="slope" data-value="4" type="button">4</button>
+              <button class="btn calc-btn" data-target="slope" data-value="5" type="button">5</button>
+              <button class="btn calc-btn" data-target="slope" data-value="6" type="button">6</button>
+              <button class="btn calc-btn" data-target="slope" data-value="-" type="button">－</button>
+              <button class="btn calc-btn" data-target="slope" data-value="1" type="button">1</button>
+              <button class="btn calc-btn" data-target="slope" data-value="2" type="button">2</button>
+              <button class="btn calc-btn" data-target="slope" data-value="3" type="button">3</button>
+              <button class="btn calc-btn" data-target="slope" data-value="." type="button">.</button>
+              <button class="btn calc-btn" data-target="slope" data-value="0" type="button">0</button>
+              <button id="slopeCalcBack" class="btn" type="button">⌫</button>
+              <button id="slopeCalcClear" class="btn" type="button">AC</button>
+              <button id="slopeCalcEq" class="btn" type="button">＝</button>
+            </div>
+            <div class="mini-calc-actions">
+              <button id="applySlopeCalc" class="btn" type="button">高低差に入れる</button>
+              <button id="closeSlopeCalc" class="btn" type="button">閉じる</button>
+            </div>
+          </div>
+          <div class="calc-toggle">
+            <button id="toggleSlopeCalc" class="btn" type="button" style="width:100%;">電卓を開く</button>
+          </div>
+          <div id="slopeCalcBox" class="mini-calc hidden">
+            <div class="mini-calc-display">
+              <div class="mini-calc-label">式</div>
+              <div id="slopeCalcExpression" class="mini-calc-expression"></div>
+              <div class="mini-calc-label" style="margin-top:6px;">結果</div>
+              <div id="slopeCalcResult" class="mini-calc-result">0</div>
+            </div>
+            <div class="mini-calc-grid">
+              <button class="btn calc-btn" data-target="slope" data-value="7" type="button">7</button>
+              <button class="btn calc-btn" data-target="slope" data-value="8" type="button">8</button>
+              <button class="btn calc-btn" data-target="slope" data-value="9" type="button">9</button>
+              <button class="btn calc-btn" data-target="slope" data-value="+" type="button">＋</button>
+              <button class="btn calc-btn" data-target="slope" data-value="4" type="button">4</button>
+              <button class="btn calc-btn" data-target="slope" data-value="5" type="button">5</button>
+              <button class="btn calc-btn" data-target="slope" data-value="6" type="button">6</button>
+              <button class="btn calc-btn" data-target="slope" data-value="-" type="button">－</button>
+              <button class="btn calc-btn" data-target="slope" data-value="1" type="button">1</button>
+              <button class="btn calc-btn" data-target="slope" data-value="2" type="button">2</button>
+              <button class="btn calc-btn" data-target="slope" data-value="3" type="button">3</button>
+              <button class="btn calc-btn" data-target="slope" data-value="." type="button">.</button>
+              <button class="btn calc-btn" data-target="slope" data-value="0" type="button">0</button>
+              <button id="slopeCalcBack" class="btn" type="button">⌫</button>
+              <button id="slopeCalcClear" class="btn" type="button">AC</button>
+              <button id="slopeCalcEq" class="btn" type="button">＝</button>
+            </div>
+            <div class="mini-calc-actions">
+              <button id="applySlopeCalc" class="btn" type="button">高低差に入れる</button>
+              <button id="closeSlopeCalc" class="btn" type="button">閉じる</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -312,6 +378,7 @@
     };
 
     const calcState = {
+      slope: { expression: '', result: 0 },
       run: { expression: '', result: 0 }
     };
 
@@ -347,6 +414,24 @@
       resultRise: document.getElementById('resultRise'),
       quickButtons: Array.from(document.querySelectorAll('.quick-btn')),
       resetBtn: document.getElementById('resetBtn'),
+      toggleSlopeCalc: document.getElementById('toggleSlopeCalc'),
+      slopeCalcBox: document.getElementById('slopeCalcBox'),
+      slopeCalcExpression: document.getElementById('slopeCalcExpression'),
+      slopeCalcResult: document.getElementById('slopeCalcResult'),
+      applySlopeCalc: document.getElementById('applySlopeCalc'),
+      closeSlopeCalc: document.getElementById('closeSlopeCalc'),
+      slopeCalcBack: document.getElementById('slopeCalcBack'),
+      slopeCalcClear: document.getElementById('slopeCalcClear'),
+      slopeCalcEq: document.getElementById('slopeCalcEq'),
+      toggleSlopeCalc: document.getElementById('toggleSlopeCalc'),
+      slopeCalcBox: document.getElementById('slopeCalcBox'),
+      slopeCalcExpression: document.getElementById('slopeCalcExpression'),
+      slopeCalcResult: document.getElementById('slopeCalcResult'),
+      applySlopeCalc: document.getElementById('applySlopeCalc'),
+      closeSlopeCalc: document.getElementById('closeSlopeCalc'),
+      slopeCalcBack: document.getElementById('slopeCalcBack'),
+      slopeCalcClear: document.getElementById('slopeCalcClear'),
+      slopeCalcEq: document.getElementById('slopeCalcEq'),
       toggleRunCalc: document.getElementById('toggleRunCalc'),
       runCalcBox: document.getElementById('runCalcBox'),
       runCalcExpression: document.getElementById('runCalcExpression'),
@@ -392,12 +477,17 @@
       return tokens.reduce((sum, token) => sum + Number(token), 0);
     }
 
-    function renderCalculator(){
-      const expr = calcState.run.expression;
-      els.runCalcExpression.textContent = expr || ' ';
+    function renderCalculator(target){
+      const expr = calcState[target].expression;
       const result = evaluateSimpleExpression(expr);
-      calcState.run.result = Number.isFinite(result) ? result : 0;
-      els.runCalcResult.textContent = Number.isFinite(result) ? roundSmart(result) : 'Err';
+      calcState[target].result = Number.isFinite(result) ? result : 0;
+      if (target === 'slope') {
+        els.slopeCalcExpression.textContent = expr || ' ';
+        els.slopeCalcResult.textContent = Number.isFinite(result) ? roundSmart(result) : 'Err';
+      } else {
+        els.runCalcExpression.textContent = expr || ' ';
+        els.runCalcResult.textContent = Number.isFinite(result) ? roundSmart(result) : 'Err';
+      }
     }
 
     function syncPercentInputs(percent){
@@ -508,11 +598,23 @@
       });
     });
 
+    els.toggleSlopeCalc.addEventListener('click', () => {
+      const willOpen = els.slopeCalcBox.classList.contains('hidden');
+      els.slopeCalcBox.classList.toggle('hidden', !willOpen);
+      els.toggleSlopeCalc.textContent = willOpen ? '電卓を閉じる' : '電卓を開く';
+      renderCalculator('slope');
+    });
+
+    els.closeSlopeCalc.addEventListener('click', () => {
+      els.slopeCalcBox.classList.add('hidden');
+      els.toggleSlopeCalc.textContent = '電卓を開く';
+    });
+
     els.toggleRunCalc.addEventListener('click', () => {
       const willOpen = els.runCalcBox.classList.contains('hidden');
       els.runCalcBox.classList.toggle('hidden', !willOpen);
       els.toggleRunCalc.textContent = willOpen ? '電卓を閉じる' : '電卓を開く';
-      renderCalculator();
+      renderCalculator('run');
     });
 
     els.closeRunCalc.addEventListener('click', () => {
@@ -522,22 +624,50 @@
 
     els.calcButtons.forEach(btn => {
       btn.addEventListener('click', () => {
-        calcState.run.expression += btn.dataset.value;
-        renderCalculator();
+        calcState[btn.dataset.target].expression += btn.dataset.value;
+        renderCalculator(btn.dataset.target);
       });
     });
 
+    els.slopeCalcBack.addEventListener('click', () => {
+      calcState.slope.expression = calcState.slope.expression.slice(0, -1);
+      renderCalculator('slope');
+    });
+
+    els.slopeCalcClear.addEventListener('click', () => {
+      calcState.slope.expression = '';
+      renderCalculator('slope');
+    });
+
+    els.slopeCalcEq.addEventListener('click', () => renderCalculator('slope'));
+
     els.runCalcBack.addEventListener('click', () => {
       calcState.run.expression = calcState.run.expression.slice(0, -1);
-      renderCalculator();
+      renderCalculator('run');
     });
 
     els.runCalcClear.addEventListener('click', () => {
       calcState.run.expression = '';
-      renderCalculator();
+      renderCalculator('run');
     });
 
-    els.runCalcEq.addEventListener('click', renderCalculator);
+    els.runCalcEq.addEventListener('click', () => renderCalculator('run'));
+
+    els.applySlopeCalc.addEventListener('click', () => {
+      const result = evaluateSimpleExpression(calcState.slope.expression);
+      if (Number.isFinite(result)) {
+        els.slopeRise.value = roundSmart(result);
+        recalc();
+      }
+    });
+
+    els.applySlopeCalc.addEventListener('click', () => {
+      const result = evaluateSimpleExpression(calcState.slope.expression);
+      if (Number.isFinite(result)) {
+        els.slopeRise.value = roundSmart(result);
+        recalc();
+      }
+    });
 
     els.applyRunCalc.addEventListener('click', () => {
       const result = evaluateSimpleExpression(calcState.run.expression);
@@ -563,15 +693,20 @@
       els.quickButtons.forEach(btn => btn.classList.remove('active'));
       state.runInputMode = 'percent';
       state.riseInputMode = 'percent';
+      calcState.slope.expression = '';
       calcState.run.expression = '';
-      renderCalculator();
+      renderCalculator('slope');
+      renderCalculator('run');
+      els.slopeCalcBox.classList.add('hidden');
+      els.toggleSlopeCalc.textContent = '電卓を開く';
       els.runCalcBox.classList.add('hidden');
       els.toggleRunCalc.textContent = '電卓を開く';
       renderInputModes();
       recalc();
     });
 
-    renderCalculator();
+    renderCalculator('slope');
+    renderCalculator('run');
     renderInputModes();
     setMode('slope');
   </script>
