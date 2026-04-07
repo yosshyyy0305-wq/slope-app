@@ -86,11 +86,10 @@
     .summary-box .v{font-size:24px;font-weight:900;line-height:1.2;word-break:break-word}
     .summary-box .s{font-size:13px;font-weight:800;color:var(--muted);margin-top:4px;min-height:18px}
 
-    .diagram-card{border:1px solid var(--line);border-radius:14px;background:#f8fbff;padding:8px 10px;margin-bottom:10px}
-    .diagram-title{font-size:12px;font-weight:800;color:var(--muted);margin-bottom:6px}
+    .diagram-card{border:1px solid var(--line);border-radius:14px;background:#f8fbff;padding:6px 8px;margin-bottom:10px}
     .mini-diagram{position:relative}
-    .mini-diagram svg{display:block;width:100%;height:148px}
-    .diagram-note{position:absolute;left:8px;top:6px;font-size:11px;font-weight:800;color:var(--muted);background:rgba(255,255,255,.9);padding:3px 7px;border-radius:999px;border:1px solid var(--line)}
+    .mini-diagram svg{display:block;width:100%;height:134px}
+    .diagram-note{display:none}
 
     .hidden{display:none!important}
 
@@ -101,7 +100,7 @@
       .quick-grid-top{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
       .quick-grid-bottom{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin-top:6px}
       .quick-grid-top .btn,.quick-grid-bottom .btn{font-size:12px;padding:9px 6px}
-      .mini-diagram svg{height:136px}
+      .mini-diagram svg{height:124px}
     }
   </style>
 </head>
@@ -124,17 +123,15 @@
 
     <div id="panel-slope" class="panel">
       <div class="diagram-card">
-        <div class="diagram-title">図</div>
         <div class="mini-diagram">
-          <div class="diagram-note">勾配を計算</div>
-          <svg viewBox="0 0 360 148" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-            <line x1="55" y1="110" x2="275" y2="110" stroke="#1f6fd6" stroke-width="6" stroke-linecap="round" />
-            <line x1="275" y1="110" x2="275" y2="34" stroke="#1f6fd6" stroke-width="6" stroke-linecap="round" />
-            <line x1="55" y1="110" x2="275" y2="34" stroke="#8fb8ef" stroke-width="5" stroke-linecap="round" />
-            <rect x="249" y="84" width="26" height="26" fill="none" stroke="#8fb8ef" stroke-width="4" rx="3" />
-            <text x="165" y="134" text-anchor="middle" font-size="15" font-weight="700" fill="#5b728d">⇄ 水平距離</text>
-            <text x="308" y="72" text-anchor="middle" font-size="15" font-weight="700" fill="#5b728d">⇅ 高低差</text>
-            <text x="156" y="44" text-anchor="middle" font-size="15" font-weight="700" fill="#1f6fd6">∠ 求める</text>
+          <svg viewBox="0 0 360 138" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+            <line x1="55" y1="110" x2="275" y2="110" stroke="#1f6fd6" stroke-width="6" stroke-linecap="round" stroke-dasharray="12 10" />
+            <line x1="275" y1="102" x2="275" y2="30" stroke="#1f6fd6" stroke-width="6" stroke-linecap="round" />
+            <line x1="55" y1="102" x2="275" y2="30" stroke="#8fb8ef" stroke-width="5" stroke-linecap="round" />
+            <rect x="249" y="76" width="26" height="26" fill="none" stroke="#8fb8ef" stroke-width="4" rx="3" />
+            <text x="165" y="128" text-anchor="middle" font-size="15" font-weight="700" fill="#5b728d">⇄ 水平距離</text>
+            <text x="308" y="66" text-anchor="middle" font-size="15" font-weight="700" fill="#5b728d">⇅ 高低差</text>
+            <text x="156" y="40" text-anchor="middle" font-size="15" font-weight="700" fill="#1f6fd6">∠ 求める</text>
           </svg>
         </div>
       </div>
@@ -158,17 +155,15 @@
 
     <div id="panel-run" class="panel hidden">
       <div class="diagram-card">
-        <div class="diagram-title">図</div>
         <div class="mini-diagram">
-          <div class="diagram-note">水平距離を計算</div>
-          <svg viewBox="0 0 360 148" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-            <line x1="55" y1="110" x2="275" y2="110" stroke="#1f6fd6" stroke-width="6" stroke-linecap="round" stroke-dasharray="12 10" />
-            <line x1="275" y1="110" x2="275" y2="34" stroke="#1f6fd6" stroke-width="6" stroke-linecap="round" />
-            <line x1="55" y1="110" x2="275" y2="34" stroke="#8fb8ef" stroke-width="5" stroke-linecap="round" />
-            <rect x="249" y="84" width="26" height="26" fill="none" stroke="#8fb8ef" stroke-width="4" rx="3" />
-            <text x="165" y="134" text-anchor="middle" font-size="15" font-weight="700" fill="#1f6fd6">⇄ 求める</text>
-            <text x="308" y="86" text-anchor="middle" font-size="15" font-weight="700" fill="#5b728d">⇅ 高低差</text>
-            <text x="156" y="44" text-anchor="middle" font-size="15" font-weight="700" fill="#5b728d">∠ 勾配</text>
+          <svg viewBox="0 0 360 138" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+            <line x1="55" y1="102" x2="275" y2="102" stroke="#1f6fd6" stroke-width="6" stroke-linecap="round" stroke-dasharray="12 10" />
+            <line x1="275" y1="102" x2="275" y2="30" stroke="#1f6fd6" stroke-width="6" stroke-linecap="round" />
+            <line x1="55" y1="102" x2="275" y2="30" stroke="#8fb8ef" stroke-width="5" stroke-linecap="round" />
+            <rect x="249" y="76" width="26" height="26" fill="none" stroke="#8fb8ef" stroke-width="4" rx="3" />
+            <text x="165" y="128" text-anchor="middle" font-size="15" font-weight="700" fill="#1f6fd6">⇄ 求める</text>
+            <text x="308" y="66" text-anchor="middle" font-size="15" font-weight="700" fill="#5b728d">⇅ 高低差</text>
+            <text x="156" y="40" text-anchor="middle" font-size="15" font-weight="700" fill="#5b728d">∠ 勾配</text>
           </svg>
         </div>
       </div>
@@ -212,17 +207,15 @@
 
     <div id="panel-rise" class="panel hidden">
       <div class="diagram-card">
-        <div class="diagram-title">図</div>
         <div class="mini-diagram">
-          <div class="diagram-note">高低差を計算</div>
-          <svg viewBox="0 0 360 148" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-            <line x1="55" y1="110" x2="275" y2="110" stroke="#1f6fd6" stroke-width="6" stroke-linecap="round" />
-            <line x1="275" y1="110" x2="275" y2="34" stroke="#1f6fd6" stroke-width="6" stroke-linecap="round" stroke-dasharray="12 10" />
-            <line x1="55" y1="110" x2="275" y2="34" stroke="#8fb8ef" stroke-width="5" stroke-linecap="round" />
-            <rect x="249" y="84" width="26" height="26" fill="none" stroke="#8fb8ef" stroke-width="4" rx="3" />
-            <text x="165" y="156" text-anchor="middle" font-size="15" font-weight="700" fill="#5b728d">⇄ 水平距離</text>
-            <text x="308" y="72" text-anchor="middle" font-size="15" font-weight="700" fill="#1f6fd6">⇅ 求める</text>
-            <text x="156" y="44" text-anchor="middle" font-size="15" font-weight="700" fill="#5b728d">∠ 勾配</text>
+          <svg viewBox="0 0 360 138" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+            <line x1="55" y1="102" x2="275" y2="102" stroke="#1f6fd6" stroke-width="6" stroke-linecap="round" />
+            <line x1="275" y1="102" x2="275" y2="30" stroke="#1f6fd6" stroke-width="6" stroke-linecap="round" stroke-dasharray="12 10" />
+            <line x1="55" y1="102" x2="275" y2="30" stroke="#8fb8ef" stroke-width="5" stroke-linecap="round" />
+            <rect x="249" y="76" width="26" height="26" fill="none" stroke="#8fb8ef" stroke-width="4" rx="3" />
+            <text x="165" y="128" text-anchor="middle" font-size="15" font-weight="700" fill="#5b728d">⇄ 水平距離</text>
+            <text x="308" y="66" text-anchor="middle" font-size="15" font-weight="700" fill="#1f6fd6">⇅ 求める</text>
+            <text x="156" y="40" text-anchor="middle" font-size="15" font-weight="700" fill="#5b728d">∠ 勾配</text>
           </svg>
         </div>
       </div>
