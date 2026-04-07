@@ -50,7 +50,7 @@
     input:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(31,111,214,.12)}
 
     .btn{
-      min-height:44px;
+      min-height:42px;
       border-radius:12px;
       border:1px solid var(--line);
       background:#fff;
@@ -75,10 +75,10 @@
     .input-mode-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
     .input-mode-row .btn{min-height:40px;font-size:14px;padding:8px 10px}
 
-    .quick-inline{margin-top:12px}
+    .quick-inline{margin-top:8px}
     .quick-grid-top{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
     .quick-grid-bottom{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:8px}
-    .quick-grid-top .btn,.quick-grid-bottom .btn{font-size:13px;padding:10px 8px;min-height:42px;white-space:nowrap}
+    .quick-grid-top .btn,.quick-grid-bottom .btn{font-size:13px;padding:8px 8px;min-height:38px;white-space:nowrap}
 
     .summary-layout{display:grid;grid-template-columns:1fr;gap:10px}
     .summary-box{border:1px solid var(--line);border-radius:14px;background:#f8fbff;padding:12px}
@@ -117,7 +117,7 @@
         <button id="modeRise" class="btn" type="button"><span class="icon-tab">⇅</span>高低差</button>
       </div>
       <div style="margin-top:10px;">
-        <button id="resetBtn" class="btn" type="button" style="width:100%;">リセット</button>
+        <button id="resetBtn" class="btn" type="button" style="width:100%; background:#fde8e8; border-color:#f3b5b5; color:#d64545;">リセット</button>
       </div>
     </div>
 
@@ -154,33 +154,45 @@
     </div>
 
     <div id="panel-run" class="panel hidden">
-      <div class="diagram-card">
-        <div class="mini-diagram">
-          <svg viewBox="0 0 360 138" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-            <line x1="55" y1="102" x2="275" y2="102" stroke="#1f6fd6" stroke-width="6" stroke-linecap="round" stroke-dasharray="12 10" />
-            <line x1="275" y1="102" x2="275" y2="30" stroke="#1f6fd6" stroke-width="6" stroke-linecap="round" />
-            <line x1="55" y1="102" x2="275" y2="30" stroke="#8fb8ef" stroke-width="5" stroke-linecap="round" />
-            <rect x="249" y="76" width="26" height="26" fill="none" stroke="#8fb8ef" stroke-width="4" rx="3" />
-            <text x="165" y="128" text-anchor="middle" font-size="15" font-weight="700" fill="#1f6fd6">⇄ 求める</text>
-            <text x="308" y="66" text-anchor="middle" font-size="15" font-weight="700" fill="#5b728d">⇅ 高低差</text>
-            <text x="156" y="40" text-anchor="middle" font-size="15" font-weight="700" fill="#5b728d">∠ 勾配</text>
-          </svg>
-        </div>
+      <div class="mini-diagram">
+        <svg viewBox="0 0 360 138" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+          <line x1="55" y1="102" x2="275" y2="102" stroke="#1f6fd6" stroke-width="6" stroke-linecap="round" stroke-dasharray="12 10" />
+          <line x1="275" y1="102" x2="275" y2="30" stroke="#1f6fd6" stroke-width="6" stroke-linecap="round" />
+          <line x1="55" y1="102" x2="275" y2="30" stroke="#8fb8ef" stroke-width="5" stroke-linecap="round" />
+          <rect x="249" y="76" width="26" height="26" fill="none" stroke="#8fb8ef" stroke-width="4" rx="3" />
+          <text x="165" y="122" text-anchor="middle" font-size="15" font-weight="700" fill="#1f6fd6">⇄ 求める</text>
+          <text x="308" y="66" text-anchor="middle" font-size="15" font-weight="700" fill="#5b728d">⇅ 高低差</text>
+          <text x="156" y="40" text-anchor="middle" font-size="15" font-weight="700" fill="#5b728d">∠ 勾配</text>
+        </svg>
       </div>
       <div class="grid-2">
-        <div class="field">
-          <label><span class="icon-label">∠ <span>勾配</span></span></label>
-          <div class="input-mode-row">
-            <button id="runInputModePercent" class="btn active" type="button">%</button>
-            <button id="runInputModeFraction" class="btn" type="button">1/x</button>
-          </div>
-          <div id="runPercentWrap" class="unit-input">
-            <input id="runPercent" type="number" value="" step="any" inputmode="decimal" />
-            <span class="unit">%</span>
-          </div>
-          <div id="runFractionWrap" class="unit-input hidden">
-            <input id="runFraction" type="number" value="" step="any" inputmode="decimal" />
-            <span class="unit">1/x</span>
+        <div>
+          <div class="field">
+            <label><span class="icon-label">∠ <span>勾配</span></span></label>
+            <div class="input-mode-row">
+              <button id="runInputModePercent" class="btn active" type="button">%</button>
+              <button id="runInputModeFraction" class="btn" type="button">1/x</button>
+            </div>
+            <div id="runPercentWrap" class="unit-input">
+              <input id="runPercent" type="number" value="" step="any" inputmode="decimal" />
+              <span class="unit">%</span>
+            </div>
+            <div id="runFractionWrap" class="unit-input hidden">
+              <input id="runFraction" type="number" value="" step="any" inputmode="decimal" />
+              <span class="unit">1/x</span>
+            </div>
+            <div class="quick-inline">
+              <div class="quick-grid-top">
+                <button class="btn quick-btn" data-percent="1" type="button">1%</button>
+                <button class="btn quick-btn" data-percent="1.5" type="button">1.5%</button>
+                <button class="btn quick-btn" data-percent="2" type="button">2%</button>
+                <button class="btn quick-btn" data-percent="3" type="button">3%</button>
+              </div>
+              <div class="quick-grid-bottom">
+                <button class="btn quick-btn" data-percent="12.5" type="button">1/8（建基法）</button>
+                <button class="btn quick-btn" data-percent="8.3333333333" type="button">1/12（バリア法）</button>
+              </div>
+            </div>
           </div>
         </div>
         <div class="field">
@@ -191,48 +203,48 @@
           </div>
         </div>
       </div>
-      <div class="quick-inline">
-        <div class="quick-grid-top">
-          <button class="btn quick-btn" data-percent="1" type="button">1%</button>
-          <button class="btn quick-btn" data-percent="1.5" type="button">1.5%</button>
-          <button class="btn quick-btn" data-percent="2" type="button">2%</button>
-          <button class="btn quick-btn" data-percent="3" type="button">3%</button>
-        </div>
-        <div class="quick-grid-bottom">
-          <button class="btn quick-btn" data-percent="12.5" type="button">1/8（建基法）</button>
-          <button class="btn quick-btn" data-percent="8.3333333333" type="button">1/12（バリア法）</button>
-        </div>
-      </div>
     </div>
 
     <div id="panel-rise" class="panel hidden">
-      <div class="diagram-card">
-        <div class="mini-diagram">
-          <svg viewBox="0 0 360 138" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-            <line x1="55" y1="102" x2="275" y2="102" stroke="#1f6fd6" stroke-width="6" stroke-linecap="round" />
-            <line x1="275" y1="102" x2="275" y2="30" stroke="#1f6fd6" stroke-width="6" stroke-linecap="round" stroke-dasharray="12 10" />
-            <line x1="55" y1="102" x2="275" y2="30" stroke="#8fb8ef" stroke-width="5" stroke-linecap="round" />
-            <rect x="249" y="76" width="26" height="26" fill="none" stroke="#8fb8ef" stroke-width="4" rx="3" />
-            <text x="165" y="128" text-anchor="middle" font-size="15" font-weight="700" fill="#5b728d">⇄ 水平距離</text>
-            <text x="308" y="66" text-anchor="middle" font-size="15" font-weight="700" fill="#1f6fd6">⇅ 求める</text>
-            <text x="156" y="40" text-anchor="middle" font-size="15" font-weight="700" fill="#5b728d">∠ 勾配</text>
-          </svg>
-        </div>
+      <div class="mini-diagram">
+        <svg viewBox="0 0 360 138" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+          <line x1="55" y1="102" x2="275" y2="102" stroke="#1f6fd6" stroke-width="6" stroke-linecap="round" />
+          <line x1="275" y1="102" x2="275" y2="30" stroke="#1f6fd6" stroke-width="6" stroke-linecap="round" stroke-dasharray="12 10" />
+          <line x1="55" y1="102" x2="275" y2="30" stroke="#8fb8ef" stroke-width="5" stroke-linecap="round" />
+          <rect x="249" y="76" width="26" height="26" fill="none" stroke="#8fb8ef" stroke-width="4" rx="3" />
+          <text x="165" y="122" text-anchor="middle" font-size="15" font-weight="700" fill="#5b728d">⇄ 水平距離</text>
+          <text x="308" y="66" text-anchor="middle" font-size="15" font-weight="700" fill="#1f6fd6">⇅ 求める</text>
+          <text x="156" y="40" text-anchor="middle" font-size="15" font-weight="700" fill="#5b728d">∠ 勾配</text>
+        </svg>
       </div>
       <div class="grid-2">
-        <div class="field">
-          <label><span class="icon-label">∠ <span>勾配</span></span></label>
-          <div class="input-mode-row">
-            <button id="riseInputModePercent" class="btn active" type="button">%</button>
-            <button id="riseInputModeFraction" class="btn" type="button">1/x</button>
-          </div>
-          <div id="risePercentWrap" class="unit-input">
-            <input id="risePercent" type="number" value="" step="any" inputmode="decimal" />
-            <span class="unit">%</span>
-          </div>
-          <div id="riseFractionWrap" class="unit-input hidden">
-            <input id="riseFraction" type="number" value="" step="any" inputmode="decimal" />
-            <span class="unit">1/x</span>
+        <div>
+          <div class="field">
+            <label><span class="icon-label">∠ <span>勾配</span></span></label>
+            <div class="input-mode-row">
+              <button id="riseInputModePercent" class="btn active" type="button">%</button>
+              <button id="riseInputModeFraction" class="btn" type="button">1/x</button>
+            </div>
+            <div id="risePercentWrap" class="unit-input">
+              <input id="risePercent" type="number" value="" step="any" inputmode="decimal" />
+              <span class="unit">%</span>
+            </div>
+            <div id="riseFractionWrap" class="unit-input hidden">
+              <input id="riseFraction" type="number" value="" step="any" inputmode="decimal" />
+              <span class="unit">1/x</span>
+            </div>
+            <div class="quick-inline">
+              <div class="quick-grid-top">
+                <button class="btn quick-btn" data-percent="1" type="button">1%</button>
+                <button class="btn quick-btn" data-percent="1.5" type="button">1.5%</button>
+                <button class="btn quick-btn" data-percent="2" type="button">2%</button>
+                <button class="btn quick-btn" data-percent="3" type="button">3%</button>
+              </div>
+              <div class="quick-grid-bottom">
+                <button class="btn quick-btn" data-percent="12.5" type="button">1/8（建基法）</button>
+                <button class="btn quick-btn" data-percent="8.3333333333" type="button">1/12（バリア法）</button>
+              </div>
+            </div>
           </div>
         </div>
         <div class="field">
@@ -241,18 +253,6 @@
             <input id="riseRun" type="number" value="" inputmode="decimal" />
             <span class="unit">mm</span>
           </div>
-        </div>
-      </div>
-      <div class="quick-inline">
-        <div class="quick-grid-top">
-          <button class="btn quick-btn" data-percent="1" type="button">1%</button>
-          <button class="btn quick-btn" data-percent="1.5" type="button">1.5%</button>
-          <button class="btn quick-btn" data-percent="2" type="button">2%</button>
-          <button class="btn quick-btn" data-percent="3" type="button">3%</button>
-        </div>
-        <div class="quick-grid-bottom">
-          <button class="btn quick-btn" data-percent="12.5" type="button">1/8（建基法）</button>
-          <button class="btn quick-btn" data-percent="8.3333333333" type="button">1/12（バリア法）</button>
         </div>
       </div>
     </div>
